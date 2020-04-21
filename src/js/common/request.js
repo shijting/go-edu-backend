@@ -55,6 +55,24 @@ const Request = {
     update(params) {
       return Ajax.patchJson(`/v1/administrator/edit`, params);
     }
+  },
+  Roles: {
+    index(params) {
+      return Ajax.get(`/v1/role?page=${params.page}&pageSize=${params.size}`);
+    },
+    create(params) {
+      return Ajax.postJson('/v1/role', params);
+    },
+    status(params) {
+      return Ajax.patchJson('/v1/role/status', params);
+    },
+    edit(params) {
+      console.log('p', params);
+      return Ajax.get(`/v1/role/${params.id}/edit`);
+    },
+    update(params) {
+      return Ajax.patchJson(`/v1/role`, params);
+    }
   }
 };
 

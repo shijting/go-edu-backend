@@ -14,7 +14,7 @@
       </div>
       <div class="h-panel-body">
         <p>
-         <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回列表</Button>
+         <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
        </p>
        <Form v-width="400" mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="administrator">
           <FormItem label="姓名" prop="name">
@@ -75,6 +75,10 @@ export default {
         R.Administrator.create(this.administrator).then(resp => {
           console.log('data', resp);
 
+          if (resp.code !== 0) {
+            HeyUI.$Message.error(resp.msg);
+            return;
+          }
           HeyUI.$Message.success('添加成功');
           this.$router.push({ name: 'Administrator' });
         });

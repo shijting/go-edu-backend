@@ -45,7 +45,7 @@ const initRouter = () => {
         name: 'Users',
         component: (resolve) => require(['components/management/users'], resolve),
         meta: { title: '用户管理' }
-      }, {// 我的路由
+      }, {// 管理员
         path: '/administrator',
         name: 'Administrator',
         component: (resolve) => require(['components/administrators/index'], resolve),
@@ -60,6 +60,21 @@ const initRouter = () => {
         name: 'AdministratorEdit',
         component: (resolve) => require(['components/administrators/edit'], resolve),
         meta: { title: '编辑管理员', icon: 'icon-paper' }
+      }, {// 角色相关
+        path: '/administrator-role',
+        name: 'AdministratorRole',
+        component: (resolve) => require(['components/roles/index'], resolve),
+        meta: { title: '角色', icon: 'icon-paper' }
+      }, {
+        path: '/role-create',
+        name: 'RoleCreate',
+        component: (resolve) => require(['components/roles/create'], resolve),
+        meta: { title: '角色' }
+      }, {
+        path: '/role-edit',
+        name: 'RoleEdit',
+        component: (resolve) => require(['components/roles/edit'], resolve),
+        meta: { title: '角色' }
       }, {
         path: '/form',
         name: 'Form',
@@ -187,8 +202,18 @@ const initRouter = () => {
 
   let router = new VueRouter(routerParam);
   let isFirstRouter = true;
-
+  let whiteList = ['Login'];
   router.beforeEach((to, from, next) => {
+    const token = Utils.getLocal('token');
+    if (whiteList.includes(to.name)) {
+      next();
+      return;
+    } else {
+      if (!token) {
+        next({ name: 'Login' });
+        return;
+      }
+    }
     if (!isFirstRouter && !isAuthPage(to.name)) {
       next({ name: 'PermissionError' });
       return;

@@ -91,6 +91,7 @@ export default {
             HeyUI.addDict(dict.name, dict.data);
           }
         }
+        console.log('dict');
         this.loading = false;
         this.$Loading.close();
       });
@@ -112,11 +113,12 @@ export default {
           if (!isAuthPage(this.$route.name)) {
             this.$router.replace({ name: 'PermissionError' });
           }
+          this.loading = false;
+          this.$Loading.close();
         } else {
-          // window.top.location = '/login';
+          console.log('123');
+          window.top.location = '/login';
         }
-        this.loading = false;
-        this.$Loading.close();
       });
       // let menus = Utils.getLocal2Json('SYS_CONFIG_MENU') || fullMenuKeys;
       // console.log('menus', menus);

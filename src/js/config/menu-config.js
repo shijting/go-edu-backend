@@ -13,6 +13,10 @@ const fullMenus = [
       {
         title: '管理员',
         key: 'Administrator'
+      },
+      {
+        title: '角色',
+        key: 'AdministratorRole'
       }
     ]
   },
@@ -152,7 +156,6 @@ const getKeys = function (menus) {
 
 let fullMenuKeys = getKeys(fullMenus);
 const isAuthPage = function (name) {
-  console.log(' name ', name);
   let menus = G.get('SYS_MENUS') || [];
 
   if (fullMenuKeys.indexOf(name) > -1 && menus.indexOf(name) == -1) {
