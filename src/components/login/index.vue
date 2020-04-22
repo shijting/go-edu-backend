@@ -141,14 +141,12 @@ export default {
   },
   methods: {
     submit() {
-      console.log('login', Login.dispose(this.login));
-      // this.loading = true;
+      this.loading = true;
       if (this.login.email == '' || this.login.email == null || this.login.password == '' || this.login.password == null) {
         return;
       }
 
       R.Login.login(Login.dispose(this.login)).then(resp => {
-        console.log('123', resp);
         if (resp.code === 0) {
           this.$Loading('加载中');
           console.log('SYS_MENUS', resp.data.menus);
@@ -159,15 +157,15 @@ export default {
           }
           // let msg = resp.body;
           Utils.saveLocal('token', resp.data.token);
-          console.log('token', Utils.getLocal('token'));
           // store.dispatch('login', resp.data);
-          this.loading = false;
-          this.$Loading.close();
           window.location = '/';
         } else {
           HeyUI.$Message.error(resp.msg);
         }
         this.loading = false;
+      // eslint-disable-next-line handle-callback-err
+      }).catch(err => {
+        HeyUI.$Message.error('网络连接错误！');
       });
       // store.dispatch('login', this.login);
     }

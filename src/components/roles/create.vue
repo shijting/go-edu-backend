@@ -10,7 +10,7 @@
   <div class="app-form frame-page basic-form-vue">
     <div class="h-panel">
       <div class="h-panel-bar">
-        <span class="h-panel-title">添加角色</span>
+        <span class="h-panel-title">添加权限</span>
       </div>
       <div class="h-panel-body">
         <p>

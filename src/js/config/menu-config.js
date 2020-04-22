@@ -11,12 +11,16 @@ const fullMenus = [
     icon: 'icon-cog',
     children: [
       {
-        title: '管理员',
-        key: 'Administrator'
+        title: '权限',
+        key: 'AdministratorPermission'
       },
       {
         title: '角色',
         key: 'AdministratorRole'
+      },
+      {
+        title: '管理员',
+        key: 'Administrator'
       }
     ]
   },

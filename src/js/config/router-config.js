@@ -75,6 +75,21 @@ const initRouter = () => {
         name: 'RoleEdit',
         component: (resolve) => require(['components/roles/edit'], resolve),
         meta: { title: '角色' }
+      }, {// 权限相关
+        path: '/administrator-permissions',
+        name: 'AdministratorPermission',
+        component: (resolve) => require(['components/permissions/index'], resolve),
+        meta: { title: '权限列表' }
+      }, {
+        path: '/permission-create',
+        name: 'PermissionCreate',
+        component: (resolve) => require(['components/permissions/create'], resolve),
+        meta: { title: '添加权限' }
+      }, {
+        path: '/permission-edit',
+        name: 'PermissionEdit',
+        component: (resolve) => require(['components/permissions/edit'], resolve),
+        meta: { title: '编辑权限' }
       }, {
         path: '/form',
         name: 'Form',

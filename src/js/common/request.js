@@ -73,6 +73,23 @@ const Request = {
     update(params) {
       return Ajax.patchJson(`/v1/role`, params);
     }
+  },
+  Permissions: {
+    index(params) {
+      return Ajax.get(`/v1/permission?page=${params.page}&pageSize=${params.size}`);
+    },
+    create(params) {
+      return Ajax.postJson('/v1/permission', params);
+    },
+    edit(params) {
+      return Ajax.get(`/v1/permission/${params.id}/edit`);
+    },
+    update(params) {
+      return Ajax.patchJson(`/v1/permission`, params);
+    },
+    delete(params) {
+      return Ajax.delete(`/v1/permission/${params.id}`, params);
+    }
   }
 };
 

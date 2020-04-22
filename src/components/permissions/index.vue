@@ -3,7 +3,7 @@
 </style>
 <template>
   <div class="table-basic-vue frame-page h-panel">
-    <div class="h-panel-bar"><span class="h-panel-title">角色</span></div>
+    <div class="h-panel-bar"><span class="h-panel-title">权限列表</span></div>
     <div class="h-panel-body">
        <p>
          <Button class="h-btn h-btn-primary" icon="h-icon-plus" @click="create()">添加</Button>
@@ -12,26 +12,18 @@
           <TableItem :width="60" title="序号">
             <template slot-scope="{index}">{{index+1}} </template>
           </TableItem>
-          <TableItem  prop="role_name" title="角色名称"></TableItem>
+          <TableItem  prop="permission_name" title="权限名称"></TableItem>
+          <TableItem  :width="160" prop="unique_key" title="唯一标识"></TableItem>
+          <TableItem  :width="80" prop="method" title="请求方法"></TableItem>
+          <TableItem  :width="200" prop="url" title="路由"></TableItem>
           <TableItem  prop="description" title="描述"></TableItem>
           <TableItem :width="170" prop="created_at" title="创建日期" :format="dateFormat"></TableItem>
-          <TableItem  title="状态" sort="auto">
-            <template slot-scope="{ data }">
-              <span class="h-tag h-tag-green" v-if="data.status==1">正常</span>
-              <span class="h-tag h-tag-red" v-else>禁用</span>
-            </template>
-          </TableItem>
           <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
             <Poptip content="确定要执行该操作吗？" @confirm="remove(datas, data)">
-              <button class="h-btn h-btn-s h-btn-red" v-if="data.status ===1">禁用</button>
-              <button class="h-btn h-btn-s h-btn-yellow" v-else>恢复</button>
-              <!-- <span class="blue-color" @click="edit(data)">{{data.status ===1 ? '禁用' : '恢复'}}</span> -->
+              <button class="h-btn h-btn-s h-btn-red">删除</button>
             </Poptip>
-            <!-- <span class="blue-color" @click="edit(data)">编辑</span>
-            <span class="blue-color" @click="edit(data)">分配权限</span> -->
             <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">编辑</button>
-            <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">分配权限</button>
           </template>
         </TableItem>
         </Table>
@@ -76,7 +68,7 @@ export default {
         this.pagination.page = 1;
       }
       this.loading = true;
-      R.Roles.index(this.pagination).then(resp => {
+      R.Permissions.index(this.pagination).then(resp => {
         console.log('resp', resp);
         if (resp.code === 0) {
           let data = resp.data;
@@ -89,15 +81,14 @@ export default {
       });
     },
     create() {
-      this.$router.push({ name: 'RoleCreate' });
+      this.$router.push({ name: 'PermissionCreate' });
     },
     remove(data, item) {
       let id = item.id;
-      let status = item.status == 1 ? 0 : 1;
-
-      R.Roles.status({ id, status }).then(resp => {
+      R.Permissions.delete({ id }).then(resp => {
         if (resp.code === 0) {
-          data[data.indexOf(item)].status = status;
+          data.splice(data.indexOf(item), 1);
+          HeyUI.$Message.success('删除成功！');
           return;
         }
         HeyUI.$Message.error(resp.msg);
@@ -105,7 +96,7 @@ export default {
     },
     edit(item) {
       console.log('1233', item);
-      this.$router.push({ name: 'RoleEdit', params: { id: item.id } });
+      this.$router.push({ name: 'PermissionEdit', params: { id: item.id } });
     }
   },
   computed: {
