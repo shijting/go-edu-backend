@@ -17,6 +17,11 @@
          <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
        </p>
        <Form v-width="400" mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="permission">
+          <FormItem label="上级权限" prop="pid">
+            <template v-slot:label>上级权限{{permission.pid}}</template>
+            <TreePicker :option="param" :useConfirm="useConfirm" :disabled="disabled" ref="treepicker" v-model="permission.pid" @change="change" @choose="choose" @select="select"></TreePicker>
+            <!-- <Select v-model="permission.pid" :datas="pids"></Select> -->
+          </FormItem>
           <FormItem label="名称" prop="permission_name">
             <template v-slot:label>名称</template>
             <input type="text" v-model="permission.permission_name" />
@@ -54,10 +59,23 @@ export default {
     return {
       permission: Permission.parse({}),
       loading: false,
+      pids: [{ title: '顶级权限', id: 0 }],
+      disabled: false,
+      useConfirm: false,
+      param: {
+        keyName: 'id',
+        parentName: 'parent',
+        titleName: 'title',
+        dataMode: 'list',
+        datas: [{ title: '顶级权限', id: 0 }]
+      },
       // eslint-disable-next-line standard/array-bracket-even-spacing
       methods: [{ title: 'GET', key: 'GET' }, { title: 'POST', key: 'POST' }, { title: 'DELETE', key: 'DELETE' }, { title: 'PUT', key: 'PUT' }, { title: 'PATCH', key: 'PATCH' } ],
       validRules: {
         rules: {
+          pid: {
+            required: true
+          },
           permission_name: {
             minLen: 3,
             maxLen: 30,
@@ -83,7 +101,33 @@ export default {
       }
     };
   },
+  mounted() {
+    R.Permissions.list({ id: 0 }).then(resp => {
+      console.log('resp', resp);
+      if (resp.code !== 0) {
+        return;
+      }
+      if (resp.data.list.length > 0) {
+        resp.data.list.forEach(item => {
+          console.log('item', item);
+          let parentNode = { title: item.permission_name, id: item.id };
+          this.param.datas.push(parentNode);
+          this.childrenNode(item);
+        });
+      }
+    });
+  },
   methods: {
+    childrenNode(item) {
+      if (item.children && item.children.length > 0) {
+        item.children.forEach(childrenItem => {
+          this.param.datas.push({ title: childrenItem.permission_name, id: childrenItem.id, parent: childrenItem.pid });
+          if (childrenItem.children && childrenItem.children.length > 0) {
+            this.childrenNode(childrenItem);
+          }
+        });
+      }
+    },
     back() {
       this.$router.push({ name: 'AdministratorPermission' });
     },
@@ -103,6 +147,19 @@ export default {
           this.$router.push({ name: 'AdministratorPermission' });
         });
       }
+    },
+    change() {
+      // 选择器关闭的时候触发
+    },
+    update() {
+      // 1.17.0+ 支持该方式更新，其他版本请使用 updateShow
+      this.value = [1];
+    },
+    choose(data) {
+      log(data);
+    },
+    select(data) {
+      log(data);
     }
   }
 };

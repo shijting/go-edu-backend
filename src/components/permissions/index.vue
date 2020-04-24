@@ -9,16 +9,16 @@
          <Button class="h-btn h-btn-primary" icon="h-icon-plus" @click="create()">添加</Button>
        </p>
         <Table :loading="loading" :datas="datas">
-          <TableItem :width="60" title="序号">
+          <!-- <TableItem :width="60" title="序号">
             <template slot-scope="{index}">{{index+1}} </template>
-          </TableItem>
-          <TableItem  prop="permission_name" title="权限名称"></TableItem>
+          </TableItem> -->
+          <TableItem  prop="permission_name" title="权限名称" treeOpener></TableItem>
           <TableItem  :width="160" prop="unique_key" title="唯一标识"></TableItem>
           <TableItem  :width="80" prop="method" title="请求方法"></TableItem>
           <TableItem  :width="200" prop="url" title="路由"></TableItem>
           <TableItem  prop="description" title="描述"></TableItem>
           <TableItem :width="170" prop="created_at" title="创建日期" :format="dateFormat"></TableItem>
-          <TableItem title="操作" align="center" :width="200">
+          <TableItem title="操作" align="center" :width="130">
           <template slot-scope="{ data }">
             <Poptip content="确定要执行该操作吗？" @confirm="remove(datas, data)">
               <button class="h-btn h-btn-s h-btn-red">删除</button>
@@ -27,8 +27,6 @@
           </template>
         </TableItem>
         </Table>
-        <p></p>
-        <Pagination v-if="pagination.total>0"  align="right" v-model="pagination" @change="changePage" />
     </div>
   </div>
 </template>
@@ -60,15 +58,9 @@ export default {
         return manba(value).format('YYYY/MM/DD HH:mm:ss');
       }
     },
-    changePage() {
-      this.getData(true);
-    },
-    getData(reload = false) {
-      if (reload) {
-        this.pagination.page = 1;
-      }
+    getData() {
       this.loading = true;
-      R.Permissions.index(this.pagination).then(resp => {
+      R.Permissions.index().then(resp => {
         console.log('resp', resp);
         if (resp.code === 0) {
           let data = resp.data;

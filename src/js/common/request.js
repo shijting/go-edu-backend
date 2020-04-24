@@ -76,7 +76,10 @@ const Request = {
   },
   Permissions: {
     index(params) {
-      return Ajax.get(`/v1/permission?page=${params.page}&pageSize=${params.size}`);
+      return Ajax.get(`/v1/permission`);
+    },
+    list(params) {
+      return Ajax.get(`/v1/permission-list?id=${params.id}`);
     },
     create(params) {
       return Ajax.postJson('/v1/permission', params);

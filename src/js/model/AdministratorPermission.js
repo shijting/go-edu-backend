@@ -3,5 +3,6 @@ export default new Model({
   unique_key: '',
   method: '',
   url: '',
-  description: ''
+  description: '',
+  pid: ''
 });
