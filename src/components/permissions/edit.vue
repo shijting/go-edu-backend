@@ -99,6 +99,7 @@ export default {
     };
   },
   mounted() {
+    this.$Loading('加载中...');
     this.id = this.$route.params.id;
     this.init();
   },
@@ -110,6 +111,7 @@ export default {
           return false;
         }
         this.permission = resp.data;
+        this.$Loading.close();
       });
       R.Permissions.list({ id: this.id }).then(resp => {
         if (resp.code !== 0) {

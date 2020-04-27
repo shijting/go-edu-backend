@@ -19,7 +19,7 @@
        <Form v-width="400" mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="permission">
           <FormItem label="上级权限" prop="pid">
             <template v-slot:label>上级权限{{permission.pid}}</template>
-            <TreePicker :option="param" :useConfirm="useConfirm" :disabled="disabled" ref="treepicker" v-model="permission.pid" @change="change" @choose="choose" @select="select"></TreePicker>
+            <TreePicker :option="param" :useConfirm="useConfirm" :disabled="disabled" ref="treepicker" v-model="permission.pid"></TreePicker>
             <!-- <Select v-model="permission.pid" :datas="pids"></Select> -->
           </FormItem>
           <FormItem label="名称" prop="permission_name">
@@ -147,19 +147,6 @@ export default {
           this.$router.push({ name: 'AdministratorPermission' });
         });
       }
-    },
-    change() {
-      // 选择器关闭的时候触发
-    },
-    update() {
-      // 1.17.0+ 支持该方式更新，其他版本请使用 updateShow
-      this.value = [1];
-    },
-    choose(data) {
-      log(data);
-    },
-    select(data) {
-      log(data);
     }
   }
 };

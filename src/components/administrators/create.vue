@@ -29,6 +29,10 @@
             <template v-slot:label>密码</template>
             <input type="text" v-model="administrator.password" />
           </FormItem>
+          <FormItem label="权限角色" prop="method">
+            <template v-slot:label>权限角色</template>
+            <Select v-model="administrator.role_id" :multiple="true" :datas="roles"></Select>
+          </FormItem>
           <FormItem>
             <Button :loading="loading" color="primary" @click="submit">添加</Button>
           </FormItem>
@@ -44,6 +48,7 @@ export default {
     return {
       administrator: Administrator.parse({}),
       loading: false,
+      roles: [],
       validRules: {
         rules: {
           name: {
@@ -63,6 +68,19 @@ export default {
         }
       }
     };
+  },
+  mounted() {
+    R.Roles.list().then(resp => {
+      if (resp.code != 0) {
+        HeyUI.$Message.error(resp.msg);
+        return;
+      }
+      if (resp.data.length > 0) {
+        resp.data.forEach(item => {
+          this.roles.push({ title: item.role_name, key: item.id });
+        });
+      }
+    });
   },
   methods: {
     back() {

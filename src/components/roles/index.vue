@@ -31,7 +31,7 @@
             <!-- <span class="blue-color" @click="edit(data)">编辑</span>
             <span class="blue-color" @click="edit(data)">分配权限</span> -->
             <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">编辑</button>
-            <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">分配权限</button>
+            <button class="h-btn h-btn-s h-btn-primary" @click="setPermissions(data)">分配权限</button>
           </template>
         </TableItem>
         </Table>
@@ -65,7 +65,8 @@ export default {
       if (!value) {
         return null;
       } else {
-        return manba(value).format('YYYY/MM/DD HH:mm:ss');
+        // return manba(value);
+        return value ? manba(value).format('YYYY/MM/DD HH:mm:ss') : '';
       }
     },
     changePage() {
@@ -104,8 +105,11 @@ export default {
       });
     },
     edit(item) {
-      console.log('1233', item);
       this.$router.push({ name: 'RoleEdit', params: { id: item.id } });
+    },
+    setPermissions(item) {
+      console.log('1233', item);
+      this.$router.push({ name: 'SetPermissions', params: { id: item.id } });
     }
   },
   computed: {

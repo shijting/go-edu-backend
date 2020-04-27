@@ -56,7 +56,7 @@ const initRouter = () => {
         component: (resolve) => require(['components/administrators/create'], resolve),
         meta: { title: '添加管理员', icon: 'icon-paper' }
       }, {
-        path: '/administrator/edit',
+        path: '/administrator/edit/:id',
         name: 'AdministratorEdit',
         component: (resolve) => require(['components/administrators/edit'], resolve),
         meta: { title: '编辑管理员', icon: 'icon-paper' }
@@ -71,9 +71,14 @@ const initRouter = () => {
         component: (resolve) => require(['components/roles/create'], resolve),
         meta: { title: '角色' }
       }, {
-        path: '/role-edit',
+        path: '/role-edit/:id',
         name: 'RoleEdit',
         component: (resolve) => require(['components/roles/edit'], resolve),
+        meta: { title: '角色' }
+      }, {
+        path: '/set-permissions/:id',
+        name: 'SetPermissions',
+        component: (resolve) => require(['components/roles/setPermissions'], resolve),
         meta: { title: '角色' }
       }, {// 权限相关
         path: '/administrator-permissions',
@@ -86,7 +91,7 @@ const initRouter = () => {
         component: (resolve) => require(['components/permissions/create'], resolve),
         meta: { title: '添加权限' }
       }, {
-        path: '/permission-edit',
+        path: '/permission-edit/:id',
         name: 'PermissionEdit',
         component: (resolve) => require(['components/permissions/edit'], resolve),
         meta: { title: '编辑权限' }

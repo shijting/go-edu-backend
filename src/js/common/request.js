@@ -72,6 +72,9 @@ const Request = {
     },
     update(params) {
       return Ajax.patchJson(`/v1/role`, params);
+    },
+    list() {
+      return Ajax.get(`/v1/roles`);
     }
   },
   Permissions: {
