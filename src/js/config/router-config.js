@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { isAuthPage } from 'js/config/menu-config';
+import { isAuthPage, fullKeys } from 'js/config/menu-config';
 
 Vue.use(VueRouter);
 
@@ -76,10 +76,10 @@ const initRouter = () => {
         component: (resolve) => require(['components/roles/edit'], resolve),
         meta: { title: '角色' }
       }, {
-        path: '/set-permissions/:id',
+        path: '/set-permissions/:id/:roleName',
         name: 'SetPermissions',
         component: (resolve) => require(['components/roles/setPermissions'], resolve),
-        meta: { title: '角色' }
+        meta: { title: '权限' }
       }, {// 权限相关
         path: '/administrator-permissions',
         name: 'AdministratorPermission',
@@ -221,6 +221,19 @@ const initRouter = () => {
   };
 
   let router = new VueRouter(routerParam);
+  // const getKeys = function (menus) {
+  //   let keys = [];
+  //   for (let menu of menus) {
+  //     keys.push(menu.name);
+  //     if (menu.children && menu.children.length) {
+  //       keys.push(...getKeys(menu.children));
+  //     }
+  //   }
+  //   return keys;
+  // };
+  // let fullMenuKeys = getKeys(routerParam.routes[1].children);
+  console.log(1);
+  // fullKeys(fullMenuKeys);
   let isFirstRouter = true;
   let whiteList = ['Login'];
   router.beforeEach((to, from, next) => {

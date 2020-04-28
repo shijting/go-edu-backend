@@ -3,11 +3,11 @@ const fullMenus = [
     title: '首页',
     key: 'Home',
     icon: 'icon-monitor',
-    count: 1
+    count: 0
   },
   {
     title: '系统',
-    key: 'system',
+    key: 'SYSTEM',
     icon: 'icon-cog',
     children: [
       {
@@ -159,13 +159,17 @@ const getKeys = function (menus) {
 };
 
 let fullMenuKeys = getKeys(fullMenus);
+console.log('init', fullMenuKeys);
 const isAuthPage = function (name) {
   let menus = G.get('SYS_MENUS') || [];
-
   if (fullMenuKeys.indexOf(name) > -1 && menus.indexOf(name) == -1) {
     return false;
   }
   return true;
 };
+let fullKeys = function (keys) {
+  fullMenuKeys.push.apply(fullMenuKeys, keys);
+  // console.log('abc', keys, fullMenuKeys);
+};
 
-export { getMenus, fullMenus, fullMenuKeys, isAuthPage };
+export { getMenus, fullMenus, fullMenuKeys, isAuthPage, fullKeys };

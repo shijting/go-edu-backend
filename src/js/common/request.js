@@ -75,11 +75,17 @@ const Request = {
     },
     list() {
       return Ajax.get(`/v1/roles`);
+    },
+    permissions(params) {
+      return Ajax.patchJson(`/v1/role/update-permissions`, params);
     }
   },
   Permissions: {
     index(params) {
       return Ajax.get(`/v1/permission`);
+    },
+    getPermission(params) {
+      return Ajax.get(`/v1/set-permission?role_id=${params.role_id}`);
     },
     list(params) {
       return Ajax.get(`/v1/permission-list?id=${params.id}`);

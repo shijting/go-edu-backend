@@ -105,8 +105,8 @@ export default {
         if (resp.code === 0) {
           // this.menus = getMenus(resp.body);
           // this.menuSelect();
-          console.log('permission', resp.data);
-          console.log('sysmenus', Utils.getLocal2Json('SYS_CONFIG_MENU') || fullMenuKeys);
+          // console.log('permission123', resp.data);
+          // console.log('sysmenus', Utils.getLocal2Json('SYS_CONFIG_MENU') || fullMenuKeys);
 
           G.set('SYS_MENUS', resp.data);
           G.trigger('SYS_MENU_UPDATE');

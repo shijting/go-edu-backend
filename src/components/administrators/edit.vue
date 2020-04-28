@@ -16,7 +16,7 @@
         <p>
          <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
        </p>
-       <Form v-width="400" mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="administrator">
+       <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="administrator">
           <FormItem label="邮箱" prop="email">
             <template v-slot:label>邮箱</template>
             <p>{{administrator.email}}</p>

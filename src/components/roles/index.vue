@@ -15,7 +15,7 @@
           <TableItem  prop="role_name" title="角色名称"></TableItem>
           <TableItem  prop="description" title="描述"></TableItem>
           <TableItem :width="170" prop="created_at" title="创建日期" :format="dateFormat"></TableItem>
-          <TableItem  title="状态" sort="auto">
+          <TableItem  :width="100" title="状态" sort="auto">
             <template slot-scope="{ data }">
               <span class="h-tag h-tag-green" v-if="data.status==1">正常</span>
               <span class="h-tag h-tag-red" v-else>禁用</span>
@@ -31,7 +31,7 @@
             <!-- <span class="blue-color" @click="edit(data)">编辑</span>
             <span class="blue-color" @click="edit(data)">分配权限</span> -->
             <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">编辑</button>
-            <button class="h-btn h-btn-s h-btn-primary" @click="setPermissions(data)">分配权限</button>
+            <button class="h-btn h-btn-s" @click="setPermissions(data)">权限</button>
           </template>
         </TableItem>
         </Table>
@@ -109,7 +109,7 @@ export default {
     },
     setPermissions(item) {
       console.log('1233', item);
-      this.$router.push({ name: 'SetPermissions', params: { id: item.id } });
+      this.$router.push({ name: 'SetPermissions', params: { id: item.id, roleName: item.role_name } });
     }
   },
   computed: {

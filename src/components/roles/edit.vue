@@ -16,7 +16,7 @@
         <p>
          <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
        </p>
-       <Form v-width="400" mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="roles">
+       <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="roles">
           <FormItem label="名称" prop="role_name">
             <template v-slot:label>名称</template>
             <input type="text" v-model="roles.role_name" />

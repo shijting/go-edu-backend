@@ -16,7 +16,7 @@
         <p>
          <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
        </p>
-       <Form v-width="400" mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="permission">
+       <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="permission">
          <FormItem label="上级权限" prop="pid">
             <template v-slot:label>上级权限{{permission.pid}}</template>
             <TreePicker :option="param" :useConfirm="useConfirm" ref="treepicker" v-model="permission.pid"></TreePicker>
@@ -87,7 +87,7 @@ export default {
             required: true
           },
           url: {
-            minLen: 3,
+            minLen: 1,
             maxLen: 100,
             required: true
           },
