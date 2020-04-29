@@ -17,15 +17,15 @@
           <TableItem :width="170" prop="created_at" title="创建日期" :format="dateFormat"></TableItem>
           <TableItem  :width="100" title="状态" sort="auto">
             <template slot-scope="{ data }">
-              <span class="h-tag h-tag-green" v-if="data.status==1">正常</span>
-              <span class="h-tag h-tag-red" v-else>禁用</span>
+              <span class="h-tag h-tag-green" v-if="data.status==1">显示</span>
+              <span class="h-tag h-tag-red" v-else>隐藏</span>
             </template>
           </TableItem>
           <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
             <Poptip content="确定要执行该操作吗？" @confirm="remove(datas, data)">
-              <button class="h-btn h-btn-s h-btn-red" v-if="data.status ===1">禁用</button>
-              <button class="h-btn h-btn-s h-btn-yellow" v-else>恢复</button>
+              <button class="h-btn h-btn-s h-btn-red" v-if="data.status ===1">隐藏</button>
+              <button class="h-btn h-btn-s h-btn-yellow" v-else>显示</button>
               <!-- <span class="blue-color" @click="edit(data)">{{data.status ===1 ? '禁用' : '恢复'}}</span> -->
             </Poptip>
             <!-- <span class="blue-color" @click="edit(data)">编辑</span>

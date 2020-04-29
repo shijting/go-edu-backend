@@ -32,7 +32,6 @@ export default {
     // this.$Loading('加载中...');
   },
   mounted() {
-    console.log('id', this.$route.params.id);
     this.init();
   },
   methods: {
@@ -45,7 +44,6 @@ export default {
         if (resp.data.list.length > 0) {
           resp.data.list.forEach(item => {
             let parentNode = { title: item.permission_name, id: item.id };
-            console.log(parentNode);
             this.param.datas.push(parentNode);
             this.childrenNode(item);
           });

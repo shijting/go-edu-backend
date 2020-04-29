@@ -102,6 +102,29 @@ const Request = {
     delete(params) {
       return Ajax.delete(`/v1/permission/${params.id}`, params);
     }
+  },
+  CourseCategoryies: {
+    index(params) {
+      return Ajax.get(`/v1/permission`);
+    },
+    getPermission(params) {
+      return Ajax.get(`/v1/set-permission?role_id=${params.role_id}`);
+    },
+    list(params) {
+      return Ajax.get(`/v1/permission-list?id=${params.id}`);
+    },
+    create(params) {
+      return Ajax.postJson('/v1/course-categories', params);
+    },
+    edit(params) {
+      return Ajax.get(`/v1/permission/${params.id}/edit`);
+    },
+    update(params) {
+      return Ajax.patchJson(`/v1/permission`, params);
+    },
+    delete(params) {
+      return Ajax.delete(`/v1/permission/${params.id}`, params);
+    }
   }
 };
 

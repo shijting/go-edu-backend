@@ -116,7 +116,6 @@ export default {
           this.loading = false;
           this.$Loading.close();
         } else {
-          console.log('123');
           window.top.location = '/login';
         }
       });
