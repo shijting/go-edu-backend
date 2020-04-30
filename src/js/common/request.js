@@ -105,7 +105,7 @@ const Request = {
   },
   CourseCategoryies: {
     index(params) {
-      return Ajax.get(`/v1/permission`);
+      return Ajax.get(`/v1/course-categories?page=${params.page}&pageSize=${params.size}`);
     },
     getPermission(params) {
       return Ajax.get(`/v1/set-permission?role_id=${params.role_id}`);
@@ -117,13 +117,13 @@ const Request = {
       return Ajax.postJson('/v1/course-categories', params);
     },
     edit(params) {
-      return Ajax.get(`/v1/permission/${params.id}/edit`);
+      return Ajax.get(`/v1/course-categories/${params.id}/edit`);
     },
     update(params) {
-      return Ajax.patchJson(`/v1/permission`, params);
+      return Ajax.patchJson(`/v1/course-categories`, params);
     },
     delete(params) {
-      return Ajax.delete(`/v1/permission/${params.id}`, params);
+      return Ajax.delete(`/v1/course-categories?id=${params.id}&status=${params.status}`);
     }
   }
 };

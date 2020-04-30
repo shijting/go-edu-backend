@@ -3,7 +3,7 @@
 </style>
 <template>
   <div class="table-basic-vue frame-page h-panel">
-    <div class="h-panel-bar"><span class="h-panel-title">课程分类</span></div>
+    <div class="h-panel-bar"><span class="h-panel-title">课程</span></div>
     <div class="h-panel-body">
        <p>
          <Button class="h-btn h-btn-primary" icon="h-icon-plus" @click="create()">添加</Button>
@@ -12,7 +12,7 @@
           <TableItem :width="60" title="序号">
             <template slot-scope="{index}">{{index+1}} </template>
           </TableItem>
-          <TableItem  prop="name" title="分类名称"></TableItem>
+          <TableItem  prop="name" title="名称"></TableItem>
           <TableItem  :width="200" prop="sort" title="排序"></TableItem>
           <TableItem  title="状态">
             <template slot-scope="{ data }">
@@ -83,7 +83,7 @@ export default {
       });
     },
     create() {
-      this.$router.push({ name: 'CourseCategoriesCreate' });
+      this.$router.push({ name: 'CourseCreate' });
     },
     remove(data, item) {
       let id = item.id;
