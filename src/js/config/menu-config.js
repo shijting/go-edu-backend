@@ -3,13 +3,40 @@ const fullMenus = [
     title: '首页',
     key: 'Home',
     icon: 'icon-monitor',
-    count: 1
+    count: 0
+  },
+  {
+    title: '视频',
+    key: 'Videos',
+    icon: 'icon-air-play',
+    children: [
+      {
+        title: '分类',
+        key: 'CourseCategories'
+      },
+      {
+        title: '课程',
+        key: 'Course'
+      },
+      {
+        title: '视频',
+        key: 'video'
+      }
+    ]
   },
   {
     title: '系统',
-    key: 'system',
+    key: 'System',
     icon: 'icon-cog',
     children: [
+      {
+        title: '权限',
+        key: 'AdministratorPermission'
+      },
+      {
+        title: '角色',
+        key: 'AdministratorRole'
+      },
       {
         title: '管理员',
         key: 'Administrator'
@@ -151,14 +178,21 @@ const getKeys = function (menus) {
 };
 
 let fullMenuKeys = getKeys(fullMenus);
+console.log('init', fullMenuKeys);
 const isAuthPage = function (name) {
-  console.log(' name ', name);
   let menus = G.get('SYS_MENUS') || [];
-
+  console.log(name, fullMenuKeys.indexOf(name), menus.indexOf(name));
   if (fullMenuKeys.indexOf(name) > -1 && menus.indexOf(name) == -1) {
     return false;
   }
   return true;
 };
+// 开始
+let fullKeys = function (keys) {
+  fullMenuKeys.push.apply(fullMenuKeys, keys);
+  console.log('abc', keys, fullMenuKeys);
+  // let abc = fullMenuKeys.concat(keys);
+  // console.log('00', abc);
+};
 
-export { getMenus, fullMenus, fullMenuKeys, isAuthPage };
+export { getMenus, fullMenus, fullMenuKeys, isAuthPage, fullKeys };

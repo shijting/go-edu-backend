@@ -1,5 +1,6 @@
 export default new Model({
   name: '',
   email: '',
-  password: ''
+  password: '',
+  role_id: []
 });

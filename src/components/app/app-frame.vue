@@ -91,6 +91,7 @@ export default {
             HeyUI.addDict(dict.name, dict.data);
           }
         }
+        console.log('dict');
         this.loading = false;
         this.$Loading.close();
       });
@@ -104,19 +105,19 @@ export default {
         if (resp.code === 0) {
           // this.menus = getMenus(resp.body);
           // this.menuSelect();
-          console.log('permission', resp.data);
-          console.log('sysmenus', Utils.getLocal2Json('SYS_CONFIG_MENU') || fullMenuKeys);
+          // console.log('permission123', resp.data);
+          // console.log('sysmenus', Utils.getLocal2Json('SYS_CONFIG_MENU') || fullMenuKeys);
 
           G.set('SYS_MENUS', resp.data);
           G.trigger('SYS_MENU_UPDATE');
           if (!isAuthPage(this.$route.name)) {
             this.$router.replace({ name: 'PermissionError' });
           }
+          this.loading = false;
+          this.$Loading.close();
         } else {
-          // window.top.location = '/login';
+          window.top.location = '/login';
         }
-        this.loading = false;
-        this.$Loading.close();
       });
       // let menus = Utils.getLocal2Json('SYS_CONFIG_MENU') || fullMenuKeys;
       // console.log('menus', menus);

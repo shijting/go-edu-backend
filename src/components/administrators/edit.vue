@@ -14,9 +14,9 @@
       </div>
       <div class="h-panel-body">
         <p>
-         <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回列表</Button>
+         <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
        </p>
-       <Form v-width="400" mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="administrator">
+       <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="administrator">
           <FormItem label="邮箱" prop="email">
             <template v-slot:label>邮箱</template>
             <p>{{administrator.email}}</p>
@@ -24,6 +24,10 @@
           <FormItem label="姓名" prop="name">
             <template v-slot:label>姓名</template>
             <input type="text" v-model="administrator.name" />
+          </FormItem>
+          <FormItem label="权限角色" prop="method">
+            <template v-slot:label>权限角色</template>
+            <Select v-model="administrator.role_id" :multiple="true" :datas="roles"></Select>
           </FormItem>
           <FormItem label="密码" prop="password">
             <template v-slot:label>密码</template>
@@ -46,6 +50,7 @@ export default {
       id: 0,
       administrator: Administrator.parse({}),
       loading: false,
+      roles: [],
       validRules: {
         rules: {
           name: {
@@ -68,13 +73,27 @@ export default {
   methods: {
     init() {
       R.Administrator.edit({ id: this.id }).then(resp => {
-        console.log(resp);
         if (resp.code !== 0) {
           HeyUI.$Message.error(resp.message);
           return false;
         }
-        this.administrator = resp.data;
-        this.administrator.password = '';
+        const role = resp.data.role;
+        console.log('id', this.administrator.role_id);
+        this.administrator.name = role.name;
+        this.administrator.email = role.email;
+        if (role.roles && role.roles.length > 0) {
+          role.roles.forEach(i => {
+            console.log('item', i);
+            this.administrator.role_id.push(parseInt(i.id));
+          });
+        }
+        console.log('id', this.administrator.role_id);
+        const roles = resp.data.roles;
+        if (roles && roles.length > 0) {
+          roles.forEach(item => {
+            this.roles.push({ title: item.role_name, key: item.id });
+          });
+        }
       });
     },
     back() {
@@ -84,7 +103,7 @@ export default {
       let validResult = this.$refs.form.valid();
       if (validResult.result) {
         // this.loading = true;
-        R.Administrator.update({ id: this.id, ...this.administrator }).then(resp => {
+        R.Administrator.update({ id: parseInt(this.id), ...this.administrator }).then(resp => {
           if (resp.code !== 0) {
             HeyUI.$Message.error(resp.message);
             return false;
