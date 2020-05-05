@@ -125,6 +125,11 @@ const Request = {
     delete(params) {
       return Ajax.delete(`/v1/course-categories?id=${params.id}&status=${params.status}`);
     }
+  },
+  Player: {
+    auth() {
+      return Ajax.get(`/v1/video/auth`);
+    }
   }
 };
 
