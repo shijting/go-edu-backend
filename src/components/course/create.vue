@@ -19,24 +19,59 @@
        <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="courses">
           <FormItem label="名称" prop="name">
             <template v-slot:label>分类</template>
-            <Select v-model="courses.category" :datas="methods"></Select>
+            <Select v-model="courses.category_id" :datas="methods"></Select>
           </FormItem>
-          <FormItem label="名称" prop="name">
+          <FormItem label="名称" prop="title">
             <template v-slot:label>标题</template>
             <input type="text" v-model="courses.title" />
           </FormItem>
-          <FormItem label="名称" prop="name">
+          <FormItem label="名称" prop="price">
             <template v-slot:label>售价</template>
-            <div class="h-input-addon">
-              <input type="text" placeholder="售价" v-model="courses.price" />
+             <div class="h-input-group" v-width="300">
+              <input type="text" v-model="courses.price" />
               <span class="h-input-addon">元</span>
             </div>
+            <span class="h-tag h-tag-yellow">0元表示免费</span>
           </FormItem>
-          <FormItem label="名称" prop="name">
+          <FormItem label="封面" prop="thumb">
             <template v-slot:label>封面</template>
-             <!-- <Qiniu :options="options" type="image" data-type="file" v-model="file"></Qiniu> -->
+             <!-- <image-upload v-model="courses.thumb" name="封面"></image-upload> -->
+             <upload-image v-model="courses.thumb" action="https://jsonplaceholder.typicode.com/posts/"></upload-image>
+          </FormItem>
+          <FormItem label="显示" prop="status">
+            <template v-slot:label>显示</template>
+            <h-switch v-model="courses.status">
+              <span slot="open" class="h-icon-check"></span>
+              <span slot="close" class="h-icon-close"></span>
+            </h-switch>
+          </FormItem>
+          <FormItem label="推荐" prop="is_rec">
+            <template v-slot:label>推荐</template>
+            <h-switch v-model="courses.is_rec">
+              <span slot="open" class="h-icon-check"></span>
+              <span slot="close" class="h-icon-close"></span>
+            </h-switch>
+          </FormItem>
+          <FormItem label="上架时间" prop="published_at">
+            <template v-slot:label>上架时间</template>
+            <DatePicker v-model="courses.published_at" v-width="300" type="datetime"></DatePicker>
+          </FormItem>
+          <FormItem label="seo关键词" prop="seo_keywords">
+            <template v-slot:label>seo关键词</template>
+            <input type="text" v-model="courses.seo_keywords" />
+          </FormItem>
+          <FormItem label="SEO描述" prop="seo_description">
+            <template v-slot:label>SEO描述</template>
+            <textarea v-model="courses.seo_description"></textarea>
+          </FormItem>
+          <FormItem label="课程描述" prop="description">
+            <template v-slot:label>课程描述</template>
+            <!-- <textarea v-model="courses.description"></textarea> -->
+            <Tinymce v-model="courses.description"></Tinymce>
           </FormItem>
           <FormItem>
+            {{courses.description}}
+            {{courses.thumb}}
             <Button :loading="loading" color="primary" @click="submit">添加</Button>
           </FormItem>
         </Form>
@@ -46,26 +81,20 @@
 </template>
 <script>
 import Courses from 'model/Courses';
-// import qiniu from '../../demos/common/qiniu';
+import tinymce from '../common/tinymce';
+import UploadImage from '../common/upload-image';
 export default {
   components: {
-    // Qiniu: qiniu
+    Tinymce: tinymce,
+    UploadImage
   },
   data() {
     return {
       courses: Courses.parse({}),
       loading: false,
+      imageUrl: '',
       // eslint-disable-next-line standard/array-bracket-even-spacing
       methods: [{ title: 'GET', key: 'GET' }, { title: 'POST', key: 'POST' }, { title: 'DELETE', key: 'DELETE' }, { title: 'PUT', key: 'PUT' }, { title: 'PATCH', key: 'PATCH' } ],
-      options: {
-        max_file_size: '1mb',
-        filters: {
-          mime_types: [
-            { title: 'Image files', extensions: 'jpg,gif,png' }
-          ]
-        }
-      },
-      file: null,
       validRules: {
         rules: {
           name: {
@@ -78,32 +107,8 @@ export default {
     };
   },
   mounted() {
-    // R.Permissions.list({ id: 0 }).then(resp => {
-    //   console.log('resp', resp);
-    //   if (resp.code !== 0) {
-    //     return;
-    //   }
-    //   if (resp.data.list.length > 0) {
-    //     resp.data.list.forEach(item => {
-    //       console.log('item', item);
-    //       let parentNode = { title: item.permission_name, id: item.id };
-    //       this.param.datas.push(parentNode);
-    //       this.childrenNode(item);
-    //     });
-    //   }
-    // });
   },
   methods: {
-    childrenNode(item) {
-      if (item.children && item.children.length > 0) {
-        item.children.forEach(childrenItem => {
-          this.param.datas.push({ title: childrenItem.permission_name, id: childrenItem.id, parent: childrenItem.pid });
-          if (childrenItem.children && childrenItem.children.length > 0) {
-            this.childrenNode(childrenItem);
-          }
-        });
-      }
-    },
     back() {
       this.$router.push({ name: 'CourseCategories' });
     },

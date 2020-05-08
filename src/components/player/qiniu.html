@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>qiniu</title>
+    <script charset="utf-8" type="text/javascript" src="https://sdk-release.qnsdk.com/qiniu-web-player-1.2.3.js"></script>
+</head>
+<body>
+  <div id="player" style="width: 640px; height: 480px;"></div>
+  <script>
+    var container = document.getElementById("player");
+    var player = new QPlayer({
+      url: "https://image.twho.top/abcdef.mp4",
+      container: container,
+      autoplay: true,
+      isLive: true
+    })
+  </script>
+</body>
+
+</html>

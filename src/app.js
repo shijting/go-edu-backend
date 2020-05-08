@@ -3,7 +3,7 @@
 import '@babel/polyfill';
 import Vue from 'vue';
 import App from 'components/App';
-
+import { Upload } from 'element-ui';
 import heyuiConfig from 'js/config/heyui-config';
 import routerConfig from 'js/config/router-config';
 import store from 'js/vuex/store';
@@ -23,6 +23,7 @@ require('./css/app.less');
 
 heyuiConfig();
 Vue.use(HeyUI);
+Vue.use(Upload);
 
 const router = routerConfig();
 
