@@ -36,7 +36,7 @@
           <FormItem label="封面" prop="thumb">
             <template v-slot:label>封面</template>
              <!-- <image-upload v-model="courses.thumb" name="封面"></image-upload> -->
-             <upload-image v-model="courses.thumb" action="https://jsonplaceholder.typicode.com/posts/"></upload-image>
+             <upload-image v-model="courses.thumb" action="/backend/v1/upload/image"></upload-image>
           </FormItem>
           <FormItem label="显示" prop="status">
             <template v-slot:label>显示</template>

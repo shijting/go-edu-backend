@@ -4,8 +4,8 @@
         :action="action"
         :show-file-list="false"
         :headers="myHeaders"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload">
+        :on-success="handleSuccess"
+        :before-upload="beforeUpload">
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
@@ -22,28 +22,33 @@ export default {
   data() {
     return {
       imageUrl: '',
-      myHeaders: { aaaa: token }
+      myHeaders: { Authorization: token }
     };
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    handleSuccess(res, file) {
+      console.log('file uploaded', res);
+      // console.log(file);
+      if (res.code != 0) {
+        HeyUI.$Message.error(res.msg);
+        return;
+      }
+      // this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = res.data.path;
     },
-    beforeAvatarUpload(file) {
+    beforeUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
       const isGIF = file.type === 'image/gif';
-      const isLt1M = file.size / 1024 < 1;
-
-      if (!isJPG || !isPNG || !isGIF) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+      const isLt1M = file.size / 1024 / 1024 < 1;
+      if (!isJPG && !isPNG && !isGIF) {
+        HeyUI.$Message.error('上传头像图片只能是 JPG,PNG,GIF 格式!');
         return false;
       }
       if (!isLt1M) {
-        this.$message.error('上传头像图片大小不能超过 1MB!');
+        HeyUI.$Message.error('上传头像图片大小不能超过 1MB!');
         return false;
       }
-      //   return isJPG && isLt1M;
       return true;
     }
   },
