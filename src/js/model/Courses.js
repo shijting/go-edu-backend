@@ -6,7 +6,7 @@ export default new Model({
   status: 0,
   published_at: '',
   is_rec: 0,
-  price: '',
+  price: 0,
   category_id: '',
   seo_keywords: ''
 });

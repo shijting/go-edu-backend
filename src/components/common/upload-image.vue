@@ -6,7 +6,7 @@
         :headers="myHeaders"
         :on-success="handleSuccess"
         :before-upload="beforeUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <img v-if="imageShowUrl" :src="imageShowUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
 </template>
@@ -22,18 +22,17 @@ export default {
   data() {
     return {
       imageUrl: '',
+      imageShowUrl: '',
       myHeaders: { Authorization: token }
     };
   },
   methods: {
     handleSuccess(res, file) {
-      console.log('file uploaded', res);
-      // console.log(file);
       if (res.code != 0) {
         HeyUI.$Message.error(res.msg);
         return;
       }
-      // this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageShowUrl = URL.createObjectURL(file.raw);
       this.imageUrl = res.data.path;
     },
     beforeUpload(file) {

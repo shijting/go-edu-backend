@@ -4,6 +4,12 @@
 <script>
 import tinymce from 'vue-tinymce-editor';
 export default {
+  props: {
+    action: {
+      type: String,
+      required: true
+    }
+  },
   components: {
     Tinymce: tinymce
   },
@@ -21,8 +27,8 @@ export default {
           var xhr, formData;
           xhr = new XMLHttpRequest();
           xhr.withCredentials = false;
-          xhr.open('POST', '/backend/api/v1/upload/image/tinymce');
-          xhr.setRequestHeader('Authorization', 'Bearer ' + Utils.getLocal('token'));
+          xhr.open('POST', this.action);
+          xhr.setRequestHeader('Authorization', Utils.getLocal('token'));
           xhr.onload = function () {
             var json;
             if (xhr.status !== 200) {
@@ -30,11 +36,15 @@ export default {
               return;
             }
             json = JSON.parse(xhr.responseText);
-            if (!json || typeof json.location !== 'string') {
+            if (!json) {
               failure('Invalid JSON: ' + xhr.responseText);
               return;
             }
-            success(json.location);
+            if (json.code !== 0) {
+              failure('Error: ' + json.msg);
+              return;
+            }
+            success(json.data.path);
           };
           formData = new FormData();
           formData.append('file', blobInfo.blob(), blobInfo.filename());

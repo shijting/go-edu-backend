@@ -17,9 +17,9 @@
          <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
        </p>
        <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="courses">
-          <FormItem label="名称" prop="name">
+          <FormItem label="分类" prop="category_id">
             <template v-slot:label>分类</template>
-            <Select v-model="courses.category_id" :datas="methods"></Select>
+            <Select v-model="courses.category_id" :datas="categories"></Select>
           </FormItem>
           <FormItem label="名称" prop="title">
             <template v-slot:label>标题</template>
@@ -28,7 +28,7 @@
           <FormItem label="名称" prop="price">
             <template v-slot:label>售价</template>
              <div class="h-input-group" v-width="300">
-              <input type="text" v-model="courses.price" />
+              <input  type="number" v-model="courses.price" />
               <span class="h-input-addon">元</span>
             </div>
             <span class="h-tag h-tag-yellow">0元表示免费</span>
@@ -66,8 +66,7 @@
           </FormItem>
           <FormItem label="课程描述" prop="description">
             <template v-slot:label>课程描述</template>
-            <!-- <textarea v-model="courses.description"></textarea> -->
-            <Tinymce v-model="courses.description"></Tinymce>
+            <Tinymce v-model="courses.description" action="/backend/v1/upload/editor"></Tinymce>
           </FormItem>
           <FormItem>
             {{courses.description}}
@@ -94,12 +93,24 @@ export default {
       loading: false,
       imageUrl: '',
       // eslint-disable-next-line standard/array-bracket-even-spacing
-      methods: [{ title: 'GET', key: 'GET' }, { title: 'POST', key: 'POST' }, { title: 'DELETE', key: 'DELETE' }, { title: 'PUT', key: 'PUT' }, { title: 'PATCH', key: 'PATCH' } ],
+      categories: [],
       validRules: {
         rules: {
-          name: {
+          title: {
             minLen: 2,
-            maxLen: 30,
+            maxLen: 60,
+            required: true
+          },
+          category_id: {
+            required: true
+          },
+          price: {
+            required: true
+          },
+          thumb: {
+            required: true
+          },
+          published_at: {
             required: true
           }
         }
@@ -107,16 +118,32 @@ export default {
     };
   },
   mounted() {
+    this.init();
   },
   methods: {
+    init() {
+      R.CourseCategoryies.all().then(resp => {
+        if (resp.code !== 0) {
+          HeyUI.$Message.error(resp.msg);
+          return;
+        }
+        resp.data.forEach(item => {
+          this.categories.push({ title: item.name, key: item.id });
+        });
+      });
+    },
     back() {
-      this.$router.push({ name: 'CourseCategories' });
+      this.$router.push({ name: 'Course' });
     },
     submit() {
       let validResult = this.$refs.form.valid();
       if (validResult.result) {
+        this.courses.status = this.courses.status ? 1 : 0;
+        this.courses.is_rec = this.courses.is_rec ? 1 : 0;
+        this.courses.price = parseFloat(this.courses.price);
+        console.log('a', this.courses);
         this.loading = true;
-        R.Courses.create(this.courseCategories).then(resp => {
+        R.Courses.create(this.courses).then(resp => {
           this.loading = false;
           console.log('data', resp);
           if (resp.code !== 0) {
@@ -125,7 +152,7 @@ export default {
             return;
           }
           HeyUI.$Message.success('添加成功');
-          this.$router.push({ name: 'CourseCategories' });
+          // this.$router.push({ name: 'CourseCategories' });
         });
       }
     }
