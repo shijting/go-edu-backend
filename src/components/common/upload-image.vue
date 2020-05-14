@@ -17,6 +17,9 @@ export default {
     action: {
       type: String,
       required: true
+    },
+    url: {
+      type: String
     }
   },
   data() {
@@ -54,6 +57,9 @@ export default {
   watch: {
     imageUrl(newVal, oldVal) {
       this.$emit('input', newVal);
+    },
+    url(newVal, oldVal) {
+      this.imageShowUrl = newVal;
     }
   }
 };

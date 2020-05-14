@@ -129,6 +129,29 @@ const Request = {
     },
     create(params) {
       return Ajax.postJson('/v1/courses', params);
+    },
+    edit(params) {
+      return Ajax.get(`/v1/courses/${params.id}/edit`);
+    },
+    update(params) {
+      return Ajax.patchJson(`/v1/courses`, params);
+    }
+  },
+  CourseChapter: {
+    index(params) {
+      return Ajax.get(`/v1/course-chapter?course_id=${params.id}&page=${params.page}&pageSize=${params.size}`);
+    },
+    create(params) {
+      return Ajax.postJson('/v1/course-chapter', params);
+    },
+    edit(params) {
+      return Ajax.get(`/v1/course-chapter/${params.id}/edit`);
+    },
+    update(params) {
+      return Ajax.patchJson(`/v1/course-chapter`, params);
+    },
+    delete(params) {
+      return Ajax.delete(`/v1/course-chapter?id=${params.id}`);
     }
   },
   Player: {

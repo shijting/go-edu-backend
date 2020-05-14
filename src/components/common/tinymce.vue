@@ -5,9 +5,12 @@
 import tinymce from 'vue-tinymce-editor';
 export default {
   props: {
-    action: {
+    imageAction: {
       type: String,
       required: true
+    },
+    value: {
+      type: String
     }
   },
   components: {
@@ -27,7 +30,7 @@ export default {
           var xhr, formData;
           xhr = new XMLHttpRequest();
           xhr.withCredentials = false;
-          xhr.open('POST', this.action);
+          xhr.open('POST', this.imageAction);
           xhr.setRequestHeader('Authorization', Utils.getLocal('token'));
           xhr.onload = function () {
             var json;
@@ -57,6 +60,9 @@ export default {
   watch: {
     data(newValue, oldValue) {
       this.$emit('input', newValue);
+    },
+    value(newValue, oldValue) {
+      this.data = newValue;
     }
   }
 };
