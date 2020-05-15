@@ -10,33 +10,31 @@
   <div class="app-form frame-page basic-form-vue">
     <div class="h-panel">
       <div class="h-panel-bar">
-        <span class="h-panel-title">添加课程</span>
+        <span class="h-panel-title">添加视频</span>
       </div>
       <div class="h-panel-body">
         <p>
          <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
        </p>
        <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="courses">
-          <FormItem label="分类" prop="category_id">
-            <template v-slot:label>分类</template>
+          <FormItem label="课程" prop="category_id">
+            <template v-slot:label>课程</template>
+            <Select v-model="courses.category_id" :datas="categories" keyName="id" titleName="name"></Select>
+          </FormItem>
+          <FormItem label="章节" prop="category_id">
+            <template v-slot:label>章节</template>
             <Select v-model="courses.category_id" :datas="categories" keyName="id" titleName="name"></Select>
           </FormItem>
           <FormItem label="名称" prop="title">
             <template v-slot:label>标题</template>
             <input type="text" v-model="courses.title" />
           </FormItem>
-          <FormItem label="名称" prop="price">
-            <template v-slot:label>售价</template>
-             <div class="h-input-group" v-width="300">
-              <input  type="number" v-model="courses.price" />
-              <span class="h-input-addon">元</span>
-            </div>
-            <span class="h-tag h-tag-yellow">0元表示免费</span>
-          </FormItem>
-          <FormItem label="封面" prop="thumb">
-            <template v-slot:label>封面</template>
-             <!-- <image-upload v-model="courses.thumb" name="封面"></image-upload> -->
-             <upload-image v-model="courses.thumb" action="/backend/v1/upload/image"></upload-image>
+          <FormItem label="试看" prop="status">
+            <template v-slot:label>试看</template>
+            <h-switch v-model="courses.status">
+              <span slot="open" class="h-icon-check"></span>
+              <span slot="close" class="h-icon-close"></span>
+            </h-switch>
           </FormItem>
           <FormItem label="显示" prop="status">
             <template v-slot:label>显示</template>
@@ -44,17 +42,6 @@
               <span slot="open" class="h-icon-check"></span>
               <span slot="close" class="h-icon-close"></span>
             </h-switch>
-          </FormItem>
-          <FormItem label="推荐" prop="is_rec">
-            <template v-slot:label>推荐</template>
-            <h-switch v-model="courses.is_rec">
-              <span slot="open" class="h-icon-check"></span>
-              <span slot="close" class="h-icon-close"></span>
-            </h-switch>
-          </FormItem>
-          <FormItem label="上架时间" prop="published_at">
-            <template v-slot:label>上架时间</template>
-            <DatePicker v-model="courses.published_at" v-width="300" type="datetime"></DatePicker>
           </FormItem>
           <FormItem label="seo关键词" prop="seo_keywords">
             <template v-slot:label>seo关键词</template>
@@ -79,11 +66,9 @@
 <script>
 import Courses from 'model/Courses';
 import tinymce from '../common/tinymce';
-import UploadImage from '../common/upload-image';
 export default {
   components: {
-    Tinymce: tinymce,
-    UploadImage
+    Tinymce: tinymce
   },
   data() {
     return {
@@ -129,7 +114,7 @@ export default {
       });
     },
     back() {
-      this.$router.push({ name: 'Course' });
+      this.$router.back();
     },
     submit() {
       let validResult = this.$refs.form.valid();
