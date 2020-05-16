@@ -1,8 +1,21 @@
 <template>
+<<<<<<< HEAD
   <el-upload class="avatar-uploader" :action="action" :show-file-list="false" :on-success="handleSuccess" :before-upload="beforeUpload">
     <img v-if="imageUrl" :src="imageUrl" class="avatar" />
     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
+=======
+    <el-upload
+        class="avatar-uploader"
+        :action="action"
+        :show-file-list="false"
+        :headers="myHeaders"
+        :on-success="handleSuccess"
+        :before-upload="beforeUpload">
+        <img v-if="imageShowUrl" :src="imageShowUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </el-upload>
+>>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
 </template>
 <script>
 var token = Utils.getLocal('token');
@@ -11,16 +24,21 @@ export default {
     action: {
       type: String,
       required: true
+    },
+    url: {
+      type: String
     }
   },
   data() {
     return {
       imageUrl: '',
-      myHeaders: { aaaa: token }
+      imageShowUrl: '',
+      myHeaders: { Authorization: token }
     };
   },
   methods: {
     handleSuccess(res, file) {
+<<<<<<< HEAD
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeUpload(file) {
@@ -36,12 +54,37 @@ export default {
       //   this.$message.error('上传头像图片大小不能超过 1MB!');
       // }
       // return isJPG && isLt1M;
+=======
+      if (res.code != 0) {
+        HeyUI.$Message.error(res.msg);
+        return;
+      }
+      this.imageShowUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = res.data.path;
+    },
+    beforeUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isGIF = file.type === 'image/gif';
+      const isLt1M = file.size / 1024 / 1024 < 1;
+      if (!isJPG && !isPNG && !isGIF) {
+        HeyUI.$Message.error('上传头像图片只能是 JPG,PNG,GIF 格式!');
+        return false;
+      }
+      if (!isLt1M) {
+        HeyUI.$Message.error('上传头像图片大小不能超过 1MB!');
+        return false;
+      }
+>>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
       return true;
     }
   },
   watch: {
     imageUrl(newVal, oldVal) {
       this.$emit('input', newVal);
+    },
+    url(newVal, oldVal) {
+      this.imageShowUrl = newVal;
     }
   }
 };

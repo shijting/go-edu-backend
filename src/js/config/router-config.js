@@ -173,14 +173,36 @@ const initRouter = () => {
             name: 'CourseCreate',
             authorized: false,
             component: resolve => require(['components/course/create'], resolve),
-            meta: { title: '创建分类' }
+            meta: { title: '创建课程' }
           },
           {
             path: '/course/:id/edit',
             name: 'CourseEdit',
             authorized: false,
             component: resolve => require(['components/course/edit'], resolve),
-            meta: { title: '编辑分类' }
+            meta: { title: '编辑课程' }
+          },
+          {
+            // 课程章节
+            path: '/course-chapter/:id/:title',
+            name: 'CourseChapter',
+            authorized: true,
+            component: resolve => require(['components/course-chapter/index'], resolve),
+            meta: { title: '章节列表' }
+          },
+          {
+            path: '/courses-chapter/create/:id',
+            name: 'CourseChapterCreate',
+            authorized: false,
+            component: resolve => require(['components/course-chapter/create'], resolve),
+            meta: { title: '创建章节' }
+          },
+          {
+            path: '/course-chapter/:id/edit',
+            name: 'CourseChapterEdit',
+            authorized: false,
+            component: resolve => require(['components/course-chapter/edit'], resolve),
+            meta: { title: '编辑章节' }
           },
           {
             path: '*',

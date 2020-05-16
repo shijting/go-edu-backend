@@ -24,14 +24,14 @@
           <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
             <Poptip content="确定要执行该操作吗？" @confirm="remove(datas, data)">
-              <button class="h-btn h-btn-s h-btn-red" v-if="data.status ===1">隐藏</button>
-              <button class="h-btn h-btn-s h-btn-yellow" v-else>显示</button>
-              <!-- <span class="blue-color" @click="edit(data)">{{data.status ===1 ? '禁用' : '恢复'}}</span> -->
+              <!-- <button class="h-btn h-btn-s h-btn-red" v-if="data.status ===1">隐藏</button>
+              <button class="h-btn h-btn-s h-btn-yellow" v-else>显示</button> -->
+              <Button class="h-btn h-btn-s" :text="true">{{data.status ===1 ? '隐藏' : '显示'}}</Button>
             </Poptip>
-            <!-- <span class="blue-color" @click="edit(data)">编辑</span>
-            <span class="blue-color" @click="edit(data)">分配权限</span> -->
-            <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">编辑</button>
-            <button class="h-btn h-btn-s" @click="setPermissions(data)">权限</button>
+            <!-- <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">编辑</button>
+            <button class="h-btn h-btn-s" @click="setPermissions(data)">权限</button> -->
+            <Button class="h-btn h-btn-s" :text="true" @click="edit(data)">编辑</Button>
+            <Button class="h-btn h-btn-s" :text="true"  @click="setPermissions(data)">权限</Button>
           </template>
         </TableItem>
         </Table>
@@ -42,6 +42,7 @@
 </template>
 <script>
 import manba from 'manba';
+import SetPermissions from './setPermissions';
 export default {
   data() {
     return {
@@ -108,8 +109,21 @@ export default {
       this.$router.push({ name: 'RoleEdit', params: { id: item.id } });
     },
     setPermissions(item) {
-      console.log('1233', item);
-      this.$router.push({ name: 'SetPermissions', params: { id: item.id, roleName: item.role_name } });
+      // this.$router.push({ name: 'SetPermissions', params: { id: item.id, roleName: item.role_name } });
+      this.$Modal({
+        type: `drawer-right`,
+        hasMask: true,
+        width: 500,
+        component: {
+          vue: SetPermissions,
+          datas: { roleId: item.id, roleName: item.role_name }
+        },
+        events: {
+          success: (modal, data) => {
+            this.value = data;
+          }
+        }
+      });
     }
   },
   computed: {

@@ -1,8 +1,7 @@
 <template>
 <div class="table-basic-vue frame-page h-panel">
-  <div class="h-panel-bar"><span class="h-panel-title">【{{$route.params.roleName}}】设置权限</span></div>
+  <div class="h-panel-bar"><span class="h-panel-title">权限【{{roleName}}】</span></div>
   <div class="h-panel-body">
-    <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
     <Button @click="chooseAll" class="h-btn h-btn-s" :text="true">全选</Button>
     <Button @click="cleanAll" class="h-btn h-btn-s" :text="true">清空</Button>
     <p>
@@ -15,6 +14,18 @@
 </template>
 <script>
 export default {
+  props: {
+    roleId: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    roleName: {
+      type: String,
+      required: true,
+      default: ''
+    }
+  },
   data() {
     return {
       loading: false,
@@ -32,11 +43,12 @@ export default {
     // this.$Loading('加载中...');
   },
   mounted() {
+    console.log('id name', this.roleId, this.roleName);
     this.init();
   },
   methods: {
     init() {
-      R.Permissions.getPermission({ role_id: this.$route.params.id }).then(resp => {
+      R.Permissions.getPermission({ role_id: this.roleId }).then(resp => {
         if (resp.code !== 0) {
           HeyUI.$Message.error(resp.msg);
           return;

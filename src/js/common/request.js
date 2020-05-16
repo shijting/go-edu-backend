@@ -107,11 +107,8 @@ const Request = {
     index(params) {
       return Ajax.get(`/v1/course-categories?page=${params.page}&pageSize=${params.size}`);
     },
-    getPermission(params) {
-      return Ajax.get(`/v1/set-permission?role_id=${params.role_id}`);
-    },
-    list(params) {
-      return Ajax.get(`/v1/permission-list?id=${params.id}`);
+    all(params) {
+      return Ajax.get(`/v1/course-categories-all`);
     },
     create(params) {
       return Ajax.postJson('/v1/course-categories', params);
@@ -124,6 +121,37 @@ const Request = {
     },
     delete(params) {
       return Ajax.delete(`/v1/course-categories?id=${params.id}&status=${params.status}`);
+    }
+  },
+  Courses: {
+    index(params) {
+      return Ajax.get(`/v1/courses?page=${params.page}&pageSize=${params.size}`);
+    },
+    create(params) {
+      return Ajax.postJson('/v1/courses', params);
+    },
+    edit(params) {
+      return Ajax.get(`/v1/courses/${params.id}/edit`);
+    },
+    update(params) {
+      return Ajax.patchJson(`/v1/courses`, params);
+    }
+  },
+  CourseChapter: {
+    index(params) {
+      return Ajax.get(`/v1/course-chapter?course_id=${params.id}&page=${params.page}&pageSize=${params.size}`);
+    },
+    create(params) {
+      return Ajax.postJson('/v1/course-chapter', params);
+    },
+    edit(params) {
+      return Ajax.get(`/v1/course-chapter/${params.id}/edit`);
+    },
+    update(params) {
+      return Ajax.patchJson(`/v1/course-chapter`, params);
+    },
+    delete(params) {
+      return Ajax.delete(`/v1/course-chapter?id=${params.id}`);
     }
   },
   Player: {
