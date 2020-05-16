@@ -14,9 +14,9 @@
       </div>
       <div class="h-panel-body">
         <p>
-         <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
-       </p>
-       <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="courses">
+          <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
+        </p>
+        <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="courses">
           <FormItem label="名称" prop="name">
             <template v-slot:label>分类</template>
             <Select v-model="courses.category_id" :datas="methods"></Select>
@@ -27,7 +27,7 @@
           </FormItem>
           <FormItem label="名称" prop="price">
             <template v-slot:label>售价</template>
-             <div class="h-input-group" v-width="300">
+            <div class="h-input-group" v-width="300">
               <input type="text" v-model="courses.price" />
               <span class="h-input-addon">元</span>
             </div>
@@ -35,8 +35,7 @@
           </FormItem>
           <FormItem label="封面" prop="thumb">
             <template v-slot:label>封面</template>
-             <!-- <image-upload v-model="courses.thumb" name="封面"></image-upload> -->
-             <upload-image v-model="courses.thumb" action="https://jsonplaceholder.typicode.com/posts/"></upload-image>
+            <upload-image v-model="courses.thumb" action="https://jsonplaceholder.typicode.com/posts/"></upload-image>
           </FormItem>
           <FormItem label="显示" prop="status">
             <template v-slot:label>显示</template>
@@ -70,8 +69,8 @@
             <Tinymce v-model="courses.description"></Tinymce>
           </FormItem>
           <FormItem>
-            {{courses.description}}
-            {{courses.thumb}}
+            {{ courses.description }}
+            {{ courses.thumb }}
             <Button :loading="loading" color="primary" @click="submit">添加</Button>
           </FormItem>
         </Form>
@@ -94,7 +93,13 @@ export default {
       loading: false,
       imageUrl: '',
       // eslint-disable-next-line standard/array-bracket-even-spacing
-      methods: [{ title: 'GET', key: 'GET' }, { title: 'POST', key: 'POST' }, { title: 'DELETE', key: 'DELETE' }, { title: 'PUT', key: 'PUT' }, { title: 'PATCH', key: 'PATCH' } ],
+      methods: [
+        { title: 'GET', key: 'GET' },
+        { title: 'POST', key: 'POST' },
+        { title: 'DELETE', key: 'DELETE' },
+        { title: 'PUT', key: 'PUT' },
+        { title: 'PATCH', key: 'PATCH' }
+      ],
       validRules: {
         rules: {
           name: {
@@ -106,8 +111,7 @@ export default {
       }
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     back() {
       this.$router.push({ name: 'CourseCategories' });
