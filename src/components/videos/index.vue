@@ -1,5 +1,6 @@
-<style lang='less'>
-  .table-basic-vue {}
+<style lang="less">
+.table-basic-vue {
+}
 </style>
 <template>
   <div class="table-basic-vue frame-page h-panel">
@@ -20,40 +21,40 @@
       </Form>
     </div>
     <div class="h-panel-body">
-       <p>
-         <Button class="h-btn h-btn-primary" icon="h-icon-plus" @click="create()">添加</Button>
-       </p>
-        <Table :loading="loading" :datas="datas">
-          <TableItem :width="60" title="序号">
-            <template slot-scope="{index}">{{index+1}} </template>
-          </TableItem>
-          <TableItem  prop="title" title="名称"></TableItem>
-          <TableItem  title="封面">
-            <template slot-scope="{ data }">
-              <ImagePreview :datas="thumb(data.thumb)" @click="openPreview1"/>
-               <!-- <img v-if="data.thumb" :src="thumb(data.thumb)" class="avatar" width="50px" height="50px" @click="openPreview"> -->
-            </template>
-          </TableItem>
-          <TableItem  prop="price" title="售价"></TableItem>
-          <TableItem  prop="category_id" title="分类"></TableItem>
-          <TableItem  title="推荐">
-            <template slot-scope="{ data }">
-              {{data.is_rec == 1 ? '是' : '否'}}
-            </template>
-          </TableItem>
-          <TableItem  title="订阅数" :width="70">
-            <template slot-scope="{ data }">
-              <a  v-tooltip trigger="hover" content="点击查看详情">10</a>
-            </template>
-          </TableItem>
-          <TableItem  title="状态">
-            <template slot-scope="{ data }">
-              <span class="h-tag h-tag-green" v-if="data.status==1">显示</span>
-              <span class="h-tag h-tag-red" v-else>隐藏</span>
-            </template>
-          </TableItem>
-          <TableItem :width="170" prop="published_at" title="上线时间" :format="dateFormat"></TableItem>
-          <TableItem title="操作" align="center" :width="170">
+      <p>
+        <Button class="h-btn h-btn-primary" icon="h-icon-plus" @click="create()">添加</Button>
+      </p>
+      <Table :loading="loading" :datas="datas">
+        <TableItem :width="60" title="序号">
+          <template slot-scope="{ index }">{{ index + 1 }} </template>
+        </TableItem>
+        <TableItem prop="title" title="名称"></TableItem>
+        <TableItem title="封面">
+          <template slot-scope="{ data }">
+            <ImagePreview :datas="thumb(data.thumb)" @click="openPreview1" />
+            <!-- <img v-if="data.thumb" :src="thumb(data.thumb)" class="avatar" width="50px" height="50px" @click="openPreview"> -->
+          </template>
+        </TableItem>
+        <TableItem prop="price" title="售价"></TableItem>
+        <TableItem prop="category_id" title="分类"></TableItem>
+        <TableItem title="推荐">
+          <template slot-scope="{ data }">
+            {{ data.is_rec == 1 ? '是' : '否' }}
+          </template>
+        </TableItem>
+        <TableItem title="订阅数" :width="70">
+          <template slot-scope="{ data }">
+            <a v-tooltip trigger="hover" content="点击查看详情">10</a>
+          </template>
+        </TableItem>
+        <TableItem title="状态">
+          <template slot-scope="{ data }">
+            <span class="h-tag h-tag-green" v-if="data.status == 1">显示</span>
+            <span class="h-tag h-tag-red" v-else>隐藏</span>
+          </template>
+        </TableItem>
+        <TableItem :width="170" prop="published_at" title="上线时间" :format="dateFormat"></TableItem>
+        <TableItem title="操作" align="center" :width="170">
           <template slot-scope="{ data }">
             <Poptip content="确定要执行该操作吗？" @confirm="remove(datas, data)">
               <button class="h-btn h-btn-s h-btn-red">删除</button>
@@ -62,9 +63,9 @@
             <button class="h-btn h-btn-s" @click="goChapter(data)">章节</button>
           </template>
         </TableItem>
-        </Table>
-        <p></p>
-        <Pagination v-if="pagination.total>0"  align="right" v-model="pagination" @change="changePage" />
+      </Table>
+      <p></p>
+      <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
     </div>
   </div>
 </template>
@@ -102,7 +103,7 @@ export default {
   },
   methods: {
     thumb(thumbSrc) {
-      return 'https://image.twho.top' + thumbSrc;
+      return 'https://image.twho.top/' + thumbSrc;
     },
     openPreview1(data) {
       this.$ImagePreview(data);
@@ -135,7 +136,7 @@ export default {
       });
     },
     create() {
-      this.$router.push({ name: 'CourseCreate' });
+      this.$router.push({ name: 'VideoCreate' });
     },
     remove(data, item) {
       let id = item.id;
@@ -161,8 +162,6 @@ export default {
       this.search.category_id = 0;
     }
   },
-  computed: {
-
-  }
+  computed: {}
 };
 </script>

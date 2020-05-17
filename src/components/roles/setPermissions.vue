@@ -1,16 +1,17 @@
 <template>
-<div class="table-basic-vue frame-page h-panel">
-  <div class="h-panel-bar"><span class="h-panel-title">权限【{{roleName}}】</span></div>
-  <div class="h-panel-body">
-    <Button @click="chooseAll" class="h-btn h-btn-s" :text="true">全选</Button>
-    <Button @click="cleanAll" class="h-btn h-btn-s" :text="true">清空</Button>
-    <p>
-    </p>
-    <Tree :option="param" ref="permissionsTree" :multiple="true" v-model="value" choose-mode="some"></Tree>
-    <br/>
-    <Button :loading="loading" color="primary" @click="submit">保存</Button>
+  <div class="table-basic-vue frame-page h-panel">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">权限【{{ roleName }}】</span>
+    </div>
+    <div class="h-panel-body">
+      <Button @click="chooseAll" class="h-btn h-btn-s" :text="true">全选</Button>
+      <Button @click="cleanAll" class="h-btn h-btn-s" :text="true">清空</Button>
+      <p></p>
+      <Tree :option="param" ref="permissionsTree" :multiple="true" v-model="value" choose-mode="some"></Tree>
+      <br />
+      <Button :loading="loading" color="primary" @click="submit">保存</Button>
+    </div>
   </div>
-</div>
 </template>
 <script>
 export default {
@@ -84,7 +85,7 @@ export default {
       this.value = [];
     },
     submit() {
-      R.Roles.permissions({ role_id: this.$route.params.id, permission_ids: this.value }).then(resp => {
+      R.Roles.permissions({ role_id: this.roleId, permission_ids: this.value }).then(resp => {
         if (resp.code !== 0) {
           HeyUI.$Message.error(resp.msg);
           return;

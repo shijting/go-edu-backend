@@ -15,7 +15,7 @@ const initRouter = () => {
         component: resolve => require(['components/login/index'], resolve)
       },
       {
-        path: '/videos',
+        path: '/videos-player',
         name: 'PlayerAliyun',
         authorized: false,
         component: resolve => require(['components/player/aliyun'], resolve)
@@ -202,6 +202,28 @@ const initRouter = () => {
             name: 'CourseChapterEdit',
             authorized: false,
             component: resolve => require(['components/course-chapter/edit'], resolve),
+            meta: { title: '编辑章节' }
+          },
+          {
+            // 视频
+            path: '/videos',
+            name: 'Video',
+            authorized: true,
+            component: resolve => require(['components/videos/index'], resolve),
+            meta: { title: '章节列表' }
+          },
+          {
+            path: '/videos/create',
+            name: 'VideoCreate',
+            authorized: false,
+            component: resolve => require(['components/videos/create'], resolve),
+            meta: { title: '创建章节' }
+          },
+          {
+            path: '/course-chapter/:id/edit',
+            name: 'CourseChapterEdit',
+            authorized: false,
+            component: resolve => require(['components/videos/edit'], resolve),
             meta: { title: '编辑章节' }
           },
           {

@@ -9,15 +9,13 @@ const fullMenus = [
     title: '用户',
     key: 'Users',
     icon: 'icon-head',
-    children: [
-    ]
+    children: []
   },
   {
     title: '订单',
     key: 'Orders',
     icon: 'icon-paper',
-    children: [
-    ]
+    children: []
   },
   {
     title: '视频',
@@ -34,7 +32,7 @@ const fullMenus = [
       },
       {
         title: '视频',
-        key: 'video'
+        key: 'Video'
       }
     ]
   },

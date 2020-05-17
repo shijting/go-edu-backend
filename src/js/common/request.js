@@ -68,7 +68,7 @@ const Request = {
     },
     edit(params) {
       console.log('p', params);
-      return Ajax.get(`/v1/role/${params.id}/edit`);
+      return Ajax.get(`/v1/role/edit/${params.id}`);
     },
     update(params) {
       return Ajax.patchJson(`/v1/role`, params);
@@ -77,7 +77,7 @@ const Request = {
       return Ajax.get(`/v1/roles`);
     },
     permissions(params) {
-      return Ajax.patchJson(`/v1/role/update-permissions`, params);
+      return Ajax.patchJson(`/v1/role/permissions/update`, params);
     }
   },
   Permissions: {
@@ -94,7 +94,7 @@ const Request = {
       return Ajax.postJson('/v1/permission', params);
     },
     edit(params) {
-      return Ajax.get(`/v1/permission/${params.id}/edit`);
+      return Ajax.get(`/v1/permission/edit/${params.id}`);
     },
     update(params) {
       return Ajax.patchJson(`/v1/permission`, params);
@@ -108,13 +108,13 @@ const Request = {
       return Ajax.get(`/v1/course-categories?page=${params.page}&pageSize=${params.size}`);
     },
     all(params) {
-      return Ajax.get(`/v1/course-categories-all`);
+      return Ajax.get(`/v1/course-categories/all`);
     },
     create(params) {
       return Ajax.postJson('/v1/course-categories', params);
     },
     edit(params) {
-      return Ajax.get(`/v1/course-categories/${params.id}/edit`);
+      return Ajax.get(`/v1/course-categories/edit/${params.id}`);
     },
     update(params) {
       return Ajax.patchJson(`/v1/course-categories`, params);
@@ -131,10 +131,13 @@ const Request = {
       return Ajax.postJson('/v1/courses', params);
     },
     edit(params) {
-      return Ajax.get(`/v1/courses/${params.id}/edit`);
+      return Ajax.get(`/v1/courses/edit/${params.id}`);
     },
     update(params) {
       return Ajax.patchJson(`/v1/courses`, params);
+    },
+    all(params) {
+      return Ajax.get(`/v1/courses/all`);
     }
   },
   CourseChapter: {
@@ -145,13 +148,21 @@ const Request = {
       return Ajax.postJson('/v1/course-chapter', params);
     },
     edit(params) {
-      return Ajax.get(`/v1/course-chapter/${params.id}/edit`);
+      return Ajax.get(`/v1/course-chapter/edit/${params.id}`);
     },
     update(params) {
       return Ajax.patchJson(`/v1/course-chapter`, params);
     },
     delete(params) {
       return Ajax.delete(`/v1/course-chapter?id=${params.id}`);
+    },
+    courseChapter(params) {
+      return Ajax.get(`/v1/course-chapter/chapter-course/${params.course_id}`);
+    }
+  },
+  AliyunVod: {
+    aliyunVodAuthTokenCreate(params) {
+      return Ajax.get(`/v1//vod/auth-token?course_id=${params.course_id}`);
     }
   },
   Player: {

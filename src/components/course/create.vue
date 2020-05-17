@@ -14,17 +14,10 @@
       </div>
       <div class="h-panel-body">
         <p>
-<<<<<<< HEAD
           <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
         </p>
         <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="courses">
-          <FormItem label="名称" prop="name">
-=======
-         <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
-       </p>
-       <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="courses">
           <FormItem label="分类" prop="category_id">
->>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
             <template v-slot:label>分类</template>
             <Select v-model="courses.category_id" :datas="categories" keyName="id" titleName="name"></Select>
           </FormItem>
@@ -34,25 +27,15 @@
           </FormItem>
           <FormItem label="名称" prop="price">
             <template v-slot:label>售价</template>
-<<<<<<< HEAD
             <div class="h-input-group" v-width="300">
-              <input type="text" v-model="courses.price" />
-=======
-             <div class="h-input-group" v-width="300">
-              <input  type="number" v-model="courses.price" />
->>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
+              <input type="number" v-model="courses.price" />
               <span class="h-input-addon">元</span>
             </div>
             <span class="h-tag h-tag-yellow">0元表示免费</span>
           </FormItem>
           <FormItem label="封面" prop="thumb">
             <template v-slot:label>封面</template>
-<<<<<<< HEAD
-            <upload-image v-model="courses.thumb" action="https://jsonplaceholder.typicode.com/posts/"></upload-image>
-=======
-             <!-- <image-upload v-model="courses.thumb" name="封面"></image-upload> -->
-             <upload-image v-model="courses.thumb" action="/backend/v1/upload/image"></upload-image>
->>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
+            <upload-image v-model="courses.thumb" action="/backend/v1/upload/image"></upload-image>
           </FormItem>
           <FormItem label="显示" prop="status">
             <template v-slot:label>显示</template>
@@ -85,11 +68,6 @@
             <Tinymce v-model="courses.description" imageAction="/backend/v1/upload/editor"></Tinymce>
           </FormItem>
           <FormItem>
-<<<<<<< HEAD
-            {{ courses.description }}
-            {{ courses.thumb }}
-=======
->>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
             <Button :loading="loading" color="primary" @click="submit">添加</Button>
           </FormItem>
         </Form>
@@ -111,18 +89,7 @@ export default {
       courses: Courses.parse({}),
       loading: false,
       imageUrl: '',
-      // eslint-disable-next-line standard/array-bracket-even-spacing
-<<<<<<< HEAD
-      methods: [
-        { title: 'GET', key: 'GET' },
-        { title: 'POST', key: 'POST' },
-        { title: 'DELETE', key: 'DELETE' },
-        { title: 'PUT', key: 'PUT' },
-        { title: 'PATCH', key: 'PATCH' }
-      ],
-=======
       categories: [],
->>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
       validRules: {
         rules: {
           title: {
@@ -146,13 +113,9 @@ export default {
       }
     };
   },
-<<<<<<< HEAD
-  mounted() {},
-=======
   mounted() {
     this.init();
   },
->>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
   methods: {
     init() {
       R.CourseCategoryies.all().then(resp => {

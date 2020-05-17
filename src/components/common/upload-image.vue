@@ -1,21 +1,15 @@
 <template>
-<<<<<<< HEAD
-  <el-upload class="avatar-uploader" :action="action" :show-file-list="false" :on-success="handleSuccess" :before-upload="beforeUpload">
-    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+  <el-upload
+    class="avatar-uploader"
+    :action="action"
+    :show-file-list="false"
+    :headers="myHeaders"
+    :on-success="handleSuccess"
+    :before-upload="beforeUpload"
+  >
+    <img v-if="imageShowUrl" :src="imageShowUrl" class="avatar" />
     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </el-upload>
-=======
-    <el-upload
-        class="avatar-uploader"
-        :action="action"
-        :show-file-list="false"
-        :headers="myHeaders"
-        :on-success="handleSuccess"
-        :before-upload="beforeUpload">
-        <img v-if="imageShowUrl" :src="imageShowUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-    </el-upload>
->>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
 </template>
 <script>
 var token = Utils.getLocal('token');
@@ -38,23 +32,6 @@ export default {
   },
   methods: {
     handleSuccess(res, file) {
-<<<<<<< HEAD
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeUpload(file) {
-      // const isJPG = file.type === 'image/jpeg';
-      // // const isPNG = file.type === 'image/png';
-      // // const isGIF = file.type === 'image/gif';
-      // const isLt1M = file.size / 1024 < 1;
-
-      // if (!isJPG) {
-      //   this.$message.error('上传头像图片只能是 JPG 格式!');
-      // }
-      // if (!isLt1M) {
-      //   this.$message.error('上传头像图片大小不能超过 1MB!');
-      // }
-      // return isJPG && isLt1M;
-=======
       if (res.code != 0) {
         HeyUI.$Message.error(res.msg);
         return;
@@ -75,7 +52,6 @@ export default {
         HeyUI.$Message.error('上传头像图片大小不能超过 1MB!');
         return false;
       }
->>>>>>> 3cb2b6ee2b04f184d809ffd82f4c62672421754c
       return true;
     }
   },

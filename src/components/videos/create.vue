@@ -14,9 +14,9 @@
       </div>
       <div class="h-panel-body">
         <p>
-         <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
-       </p>
-       <Form  mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="courses">
+          <Button class="h-btn h-btn-primary" icon="icon-arrow-left" @click="back()">返回</Button>
+        </p>
+        <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="courses">
           <FormItem label="课程" prop="category_id">
             <template v-slot:label>课程</template>
             <Select v-model="courses.category_id" :datas="categories" keyName="id" titleName="name"></Select>
@@ -35,6 +35,10 @@
               <span slot="open" class="h-icon-check"></span>
               <span slot="close" class="h-icon-close"></span>
             </h-switch>
+          </FormItem>
+          <FormItem label="试看" prop="status">
+            <template v-slot:label>上传至阿里云</template>
+            <AliyunUpload courseId="1"></AliyunUpload>
           </FormItem>
           <FormItem label="显示" prop="status">
             <template v-slot:label>显示</template>
@@ -66,9 +70,11 @@
 <script>
 import Courses from 'model/Courses';
 import tinymce from '../common/tinymce';
+import aliyun from '../common/videos/aliyun';
 export default {
   components: {
-    Tinymce: tinymce
+    Tinymce: tinymce,
+    AliyunUpload: aliyun
   },
   data() {
     return {
