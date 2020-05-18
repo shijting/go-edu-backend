@@ -123,10 +123,10 @@ export default {
         this.pagination.page = 1;
       }
       this.loading = true;
-      R.Courses.index(this.pagination).then(resp => {
+      R.Videos.index(this.pagination).then(resp => {
         if (resp.code === 0) {
           let data = resp.data;
-          console.log('data', data);
+          console.log('Videos data', data);
           this.datas = data.list;
           this.pagination.total = data.total;
         } else {

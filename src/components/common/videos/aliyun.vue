@@ -1,7 +1,9 @@
 <template>
   <div>
-    <span>{{ video_id }}</span>
-    <Button class="h-btn h-btn-primary" @click="selectVideo"><i class="h-icon-upload"></i> 选择视频</Button>
+    <div class="h-input-group" v-width="500">
+      <input type="text" placeholder="视频ID" readonly v-model="video_id" />
+      <Button class="h-btn h-btn-primary" @click="selectVideo"><i class="h-icon-upload"></i> 选择视频</Button>
+    </div>
     <input type="file" ref="aliyunfile" v-show="false" @change="fileChange" />
     <Progress :percent="progress" :stroke-width="6" :color="color" v-show="showProgress"
       ><span slot="title">{{ uploadedStatus }}</span
@@ -14,9 +16,7 @@
 export default {
   props: {
     courseId: {
-      type: String,
-      default: '',
-      required: true
+      type: Number
     }
   },
   data() {
@@ -48,38 +48,55 @@ export default {
         this.showProgress = true;
         this.color = 'greed';
         this.uploadedStatus = '上传中...';
-        R.AliyunVod.aliyunVodAuthTokenCreate({ course_id: 1 })
-          .then(resp => {
-            if (resp.code != 0) {
-              HeyUI.$Message.error(resp.msg);
-              return;
-            }
-            this.video_id = resp.data.video_id;
-            console.log('resp.data', resp.data);
-            console.log('this.uploader', this.uploader);
-            this.uploader.setUploadAuthAndAddress(uploadInfo, resp.data.upload_auth, resp.data.upload_address, resp.data.video_id);
-          })
-          .catch(err => {
-            HeyUI.$Message.error('获取阿里云视频上传凭证错误!');
-            console.log('err', err);
-          });
+        console.log('name', uploadInfo.file.name);
+        if (!uploadInfo.videoId) {
+          console.log('create');
+          R.AliyunVod.aliyunVodAuthTokenCreate({ file_name: uploadInfo.file.name })
+            .then(resp => {
+              if (resp.code != 0) {
+                HeyUI.$Message.error(resp.msg);
+                return;
+              }
+              this.video_id = resp.data.video_id;
+              this.uploader.setUploadAuthAndAddress(uploadInfo, resp.data.upload_auth, resp.data.upload_address, resp.data.video_id);
+            })
+            .catch(err => {
+              HeyUI.$Message.error('获取视频上传凭证错误!' + err);
+              console.log('err', err);
+            });
+        } else {
+          console.log('refresh', uploadInfo.videoId);
+          R.AliyunVod.aliyunVodAuthTokenRefresh({ video_id: uploadInfo.videoId })
+            .then(resp => {
+              if (resp.code != 0) {
+                HeyUI.$Message.error(resp.msg);
+                return;
+              }
+              this.video_id = resp.data.video_id;
+              this.uploader.setUploadAuthAndAddress(uploadInfo, resp.data.upload_auth, resp.data.upload_address, resp.data.video_id);
+            })
+            .catch(err => {
+              HeyUI.$Message.error('刷新视频上传凭证错误!' + err);
+              console.log('err', err);
+            });
+        }
       },
       // 文件上传成功
       onUploadSucceed: uploadInfo => {
         this.uploadedStatus = '上传成功';
-        console.log('onUpload success');
+        console.log('onUpload success', uploadInfo);
       },
       // 文件上传失败
       onUploadFailed: (uploadInfo, code, message) => {
         this.color = '#ff5500';
         this.uploadedStatus = '上传失败';
-        console.log('onUploadfile');
+        console.log('onUploadFailed');
       },
       // 文件上传进度，单位：字节
       onUploadProgress: (uploadInfo, totalSize, loadedPercent) => {
         this.progress = Math.ceil(loadedPercent * 100);
         console.log(
-          'onUploadProgress:file:' + uploadInfo.file.name + ', fileSize:' + totalSize + ', percent:' + Math.ceil(loadedPercent * 100) + '%'
+          'onUploadProgress:file:' + Math.ceil(loadedPercent * 100) + '%'
         );
       },
       // 上传凭证超时
@@ -95,11 +112,20 @@ export default {
       this.$refs.aliyunfile.click();
     },
     fileChange(event) {
+      if (this.courseId == 0) {
+        HeyUI.$Message.error('请选择课程');
+        return;
+      }
       if (event.target.files.length === 0) {
         return;
       }
       this.uploader.addFile(event.target.files[0], null, null, null, '');
       this.uploader.startUpload();
+    }
+  },
+  watch: {
+    video_id(newVal, oldVal) {
+      this.$emit('input', newVal);
     }
   }
 };
