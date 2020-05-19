@@ -87,10 +87,10 @@ const getKeys = function (menus) {
 };
 
 let fullMenuKeys = getKeys(fullMenus);
-console.log('init', fullMenuKeys);
+// console.log('init', fullMenuKeys);
 const isAuthPage = function (name) {
   let menus = G.get('SYS_MENUS') || [];
-  console.log(name, fullMenuKeys.indexOf(name), menus.indexOf(name));
+  // console.log(name, fullMenuKeys.indexOf(name), menus.indexOf(name));
   if (fullMenuKeys.indexOf(name) > -1 && menus.indexOf(name) == -1) {
     return false;
   }
@@ -99,7 +99,7 @@ const isAuthPage = function (name) {
 // 后来加的
 let fullKeys = function (keys) {
   fullMenuKeys.push.apply(fullMenuKeys, keys);
-  console.log('abc', fullMenuKeys);
+  // console.log('abc', fullMenuKeys);
   // let abc = fullMenuKeys.concat(keys);
 };
 
