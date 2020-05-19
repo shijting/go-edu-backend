@@ -15,13 +15,13 @@
 <script>
 export default {
   props: {
-    courseId: {
-      type: Number
+    video_id: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      video_id: '',
       uploader: null,
       progress: 0,
       showProgress: false,
@@ -30,6 +30,7 @@ export default {
     };
   },
   mounted() {
+    // eslint-disable-next-line no-undef
     this.uploader = new AliyunUpload.Vod({
       // 阿里账号ID，必须有值 ，值的来源https://help.aliyun.com/knowledge_detail/37196.html
       userId: '122',

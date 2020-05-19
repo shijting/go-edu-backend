@@ -162,10 +162,10 @@ const Request = {
   },
   AliyunVod: {
     aliyunVodAuthTokenCreate(params) {
-      return Ajax.get(`/v1//vod/auth-token?file_name=${params.file_name}`);
+      return Ajax.get(`/v1/vod/auth-token?file_name=${params.file_name}`);
     },
     aliyunVodAuthTokenRefresh(params) {
-      return Ajax.get(`/v1//vod/auth-token/refresh/${params.video_id}`);
+      return Ajax.get(`/v1/vod/auth-token/refresh/${params.video_id}`);
     }
   },
   Videos: {
@@ -173,7 +173,16 @@ const Request = {
       return Ajax.postJson('/v1/video', params);
     },
     index(params) {
-      return Ajax.get(`/v1/video?course_id=${params.id}&page=${params.page}&pageSize=${params.size}`);
+      return Ajax.get(`/v1/video?page=${params.page}&pageSize=${params.size}&title=${params.title}&course_id=${params.course_id}&chapter_id=${params.chapter_id}`);
+    },
+    edit(params) {
+      return Ajax.get(`/v1/video/edit/${params.id}`);
+    },
+    update(params) {
+      return Ajax.patchJson(`/v1/video`, params);
+    },
+    delete(params) {
+      return Ajax.delete(`/v1/video?id=${params.id}`);
     }
   },
   Player: {

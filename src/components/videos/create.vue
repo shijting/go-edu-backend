@@ -18,11 +18,11 @@
         </p>
         <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="validRules" :model="videos">
           <FormItem label="课程" prop="course_id">
-            <template v-slot:label>课程{{videos.course_id}}</template>
+            <template v-slot:label>课程</template>
             <Select v-model="videos.course_id" :datas="courses" keyName="id" titleName="title" @change="getChapterByCourseId"></Select>
           </FormItem>
           <FormItem label="章节" prop="chapter_id">
-            <template v-slot:label>章节{{videos.chapter_id}}</template>
+            <template v-slot:label>章节</template>
             <Select v-model="videos.chapter_id" :datas="chapters" keyName="id" titleName="title"></Select>
           </FormItem>
           <FormItem label="名称" prop="title">
@@ -38,7 +38,7 @@
           </FormItem>
           <FormItem label="视频" prop="aliyun_video_id">
             <template v-slot:label>上传至阿里云{{videos.aliyun_video_id}}</template>
-            <AliyunUpload :courseId="videos.course_id" v-model="videos.aliyun_video_id"></AliyunUpload>
+            <AliyunUpload v-model="videos.aliyun_video_id"></AliyunUpload>
           </FormItem>
           <FormItem label="时长(秒)" prop="duration">
             <template v-slot:label>时长</template>
@@ -52,7 +52,7 @@
             </h-switch>
           </FormItem>
           <FormItem label="seo关键词" prop="seo_keywords">
-            <template v-slot:label>seo关键词</template>
+            <template v-slot:label>SEO关键词</template>
             <input type="text" v-model="videos.seo_keywords" />
           </FormItem>
           <FormItem label="SEO描述" prop="seo_description">

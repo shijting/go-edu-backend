@@ -96,12 +96,11 @@ const isAuthPage = function (name) {
   }
   return true;
 };
-// 开始
+// 后来加的
 let fullKeys = function (keys) {
   fullMenuKeys.push.apply(fullMenuKeys, keys);
-  console.log('abc', keys, fullMenuKeys);
+  console.log('abc', fullMenuKeys);
   // let abc = fullMenuKeys.concat(keys);
-  // console.log('00', abc);
 };
 
 export { getMenus, fullMenus, fullMenuKeys, isAuthPage, fullKeys };

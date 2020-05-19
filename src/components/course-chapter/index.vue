@@ -88,7 +88,7 @@ export default {
         if (resp.code === 0) {
           // data.indexOf(item)
           data.splice(data.indexOf(item), 1);
-          HeyUI.$Message.success('更新成功！');
+          HeyUI.$Message.success('删除成功！');
           return;
         }
         HeyUI.$Message.error(resp.msg);

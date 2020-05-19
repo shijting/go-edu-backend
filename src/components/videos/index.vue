@@ -6,13 +6,17 @@
   <div class="table-basic-vue frame-page h-panel">
     <div class="h-panel-bar"><span class="h-panel-title">课程</span></div>
     <div class="h-panel-bar">
-      <Form :labelWidth="110">
+      <Form :labelWidth="110" >
         <FormItem label="标题搜索">
-          <input type="text" v-model="search.title" placeholder="课程标题" />
+          <input type="text" v-model="search.title" placeholder="视频标题" />
         </FormItem>
-        <FormItem label="分类">
-          <template v-slot:label>分类</template>
-          <Select v-model="search.category_id" :filterable="true" :datas="categories" keyName="id" titleName="name"></Select>
+        <FormItem label="课程搜索">
+          <template v-slot:label>课程</template>
+          <Select v-model="search.course_id" :datas="courses" keyName="id" titleName="title" @change="getChapterByCourseId"></Select>
+        </FormItem>
+        <FormItem label="章节搜索">
+          <template v-slot:label>章节</template>
+          <Select v-model="search.chapter_id" :datas="chapters" keyName="id" titleName="title"></Select>
         </FormItem>
         <FormItem>
           <Button class="h-btn h-btn-primary" @click="getData(true)">搜索</Button>
@@ -28,39 +32,35 @@
         <TableItem :width="60" title="序号">
           <template slot-scope="{ index }">{{ index + 1 }} </template>
         </TableItem>
-        <TableItem prop="title" title="名称"></TableItem>
-        <TableItem title="封面">
+        <TableItem prop="title" title="标题"></TableItem>
+        <TableItem title="课程">
           <template slot-scope="{ data }">
-            <ImagePreview :datas="thumb(data.thumb)" @click="openPreview1" />
-            <!-- <img v-if="data.thumb" :src="thumb(data.thumb)" class="avatar" width="50px" height="50px" @click="openPreview"> -->
+            {{ data.course.title }}
           </template>
         </TableItem>
-        <TableItem prop="price" title="售价"></TableItem>
-        <TableItem prop="category_id" title="分类"></TableItem>
-        <TableItem title="推荐">
+        <TableItem  title="章节">
           <template slot-scope="{ data }">
-            {{ data.is_rec == 1 ? '是' : '否' }}
+            {{ data.chapter.title }}
           </template>
         </TableItem>
-        <TableItem title="订阅数" :width="70">
+        <TableItem title="试看" :width="90">
           <template slot-scope="{ data }">
-            <a v-tooltip trigger="hover" content="点击查看详情">10</a>
+            {{ data.is_free == 1 ? '是' : '否' }}
           </template>
         </TableItem>
-        <TableItem title="状态">
+        <TableItem title="状态" :width="90">
           <template slot-scope="{ data }">
             <span class="h-tag h-tag-green" v-if="data.status == 1">显示</span>
             <span class="h-tag h-tag-red" v-else>隐藏</span>
           </template>
         </TableItem>
-        <TableItem :width="170" prop="published_at" title="上线时间" :format="dateFormat"></TableItem>
-        <TableItem title="操作" align="center" :width="170">
+        <TableItem :width="170" prop="created_at" title="创建日期" :format="dateFormat"></TableItem>
+        <TableItem title="操作" align="center" :width="150">
           <template slot-scope="{ data }">
             <Poptip content="确定要执行该操作吗？" @confirm="remove(datas, data)">
               <button class="h-btn h-btn-s h-btn-red">删除</button>
             </Poptip>
             <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">编辑</button>
-            <button class="h-btn h-btn-s" @click="goChapter(data)">章节</button>
           </template>
         </TableItem>
       </Table>
@@ -83,33 +83,41 @@ export default {
       type: 'China',
       datas: [],
       counts: {},
+      courses: [],
+      chapters: [],
       loading: false,
-      categories: [],
       search: {
         title: '',
-        category_id: 0
+        course_id: 0,
+        chapter_id: 0
       }
     };
   },
   mounted() {
-    R.CourseCategoryies.all().then(resp => {
+    R.Courses.all().then(resp => {
       if (resp.code !== 0) {
         HeyUI.$Message.error(resp.msg);
         return;
       }
-      this.categories = resp.data;
+      this.courses = resp.data;
+    }).catch(err => {
+      console.log('err', err);
+      HeyUI.$Message.error('获取课程列表失败，网络异常');
     });
     this.getData();
   },
   methods: {
-    thumb(thumbSrc) {
-      return 'https://image.twho.top/' + thumbSrc;
-    },
-    openPreview1(data) {
-      this.$ImagePreview(data);
-    },
-    changePage() {
-      this.getData(true);
+    getChapterByCourseId(data) {
+      R.CourseChapter.courseChapter({ course_id: data.id }).then(resp => {
+        if (resp.code !== 0) {
+          HeyUI.$Message.error(resp.msg);
+          return;
+        }
+        this.chapters = resp.data;
+      }).catch(err => {
+        console.log('err', err);
+        HeyUI.$Message.error('获取课程列表失败，网络异常');
+      });
     },
     dateFormat(value) {
       if (!value) {
@@ -118,12 +126,18 @@ export default {
         return manba(value).format('YYYY/MM/DD HH:mm:ss');
       }
     },
+    changePage() {
+      this.getData(true);
+    },
     getData(reload) {
       if (reload) {
         this.pagination.page = 1;
       }
       this.loading = true;
-      R.Videos.index(this.pagination).then(resp => {
+      console.log('this.search.course_id', this.search.course_id);
+      this.search.course_id = this.search.course_id ? this.search.course_id : 0;
+      this.search.chapter_id = this.search.chapter_id ? this.search.chapter_id : 0;
+      R.Videos.index({ ...this.pagination, ...this.search }).then(resp => {
         if (resp.code === 0) {
           let data = resp.data;
           console.log('Videos data', data);
@@ -140,26 +154,25 @@ export default {
     },
     remove(data, item) {
       let id = item.id;
-      let status = item.status ? 0 : 1;
-      R.CourseCategoryies.delete({ id, status }).then(resp => {
+      R.Videos.delete({ id }).then(resp => {
         if (resp.code === 0) {
-          // data.indexOf(item)
-          item.status = status;
-          HeyUI.$Message.success('更新成功！');
+          HeyUI.$Message.success('删除成功！');
+          data.splice(data.indexOf(item), 1);
           return;
         }
         HeyUI.$Message.error(resp.msg);
       });
     },
     edit(item) {
-      this.$router.push({ name: 'CourseEdit', params: { id: item.id } });
+      this.$router.push({ name: 'VideoEdit', params: { id: item.id, course_id: item.course_id } });
     },
     goChapter(data) {
       this.$router.push({ name: 'CourseChapter', params: { id: data.id, title: data.title } });
     },
     reset() {
       this.search.title = '';
-      this.search.category_id = 0;
+      this.search.course_id = 0;
+      this.search.chapter_id = 0;
     }
   },
   computed: {}

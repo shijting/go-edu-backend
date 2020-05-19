@@ -210,21 +210,21 @@ const initRouter = () => {
             name: 'Video',
             authorized: true,
             component: resolve => require(['components/videos/index'], resolve),
-            meta: { title: '章节列表' }
+            meta: { title: '视频列表' }
           },
           {
             path: '/videos/create',
             name: 'VideoCreate',
-            authorized: false,
+            authorized: true,
             component: resolve => require(['components/videos/create'], resolve),
-            meta: { title: '创建章节' }
+            meta: { title: '创建视频' }
           },
           {
-            path: '/course-chapter/:id/edit',
-            name: 'CourseChapterEdit',
+            path: '/videos/:id/edit/:course_id',
+            name: 'VideoEdit',
             authorized: false,
             component: resolve => require(['components/videos/edit'], resolve),
-            meta: { title: '编辑章节' }
+            meta: { title: '编辑视频' }
           },
           {
             path: '*',
@@ -252,9 +252,11 @@ const initRouter = () => {
     }
     return keys;
   };
-  // let fullMenuKeys = getKeys(routerParam.routes[1].children);
-  // console.log(123);
-  // fullKeys(fullMenuKeys);
+  let fullMenuKeys = getKeys(routerParam.routes[2].children);
+  console.log(123, fullMenuKeys);
+  fullKeys(fullMenuKeys);
+  console.log('routes', routerParam.routes[2].children);
+
   // 结束
   let isFirstRouter = true;
   let whiteList = ['Login', 'PlayerAliyun'];
