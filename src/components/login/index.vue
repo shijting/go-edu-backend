@@ -28,6 +28,23 @@
       >div {
         margin: 30px 0;
         &.login-input {
+          .captcha-wrapper {
+            height: 42px;
+            background-color: rgba(0, 0, 0, 0.03);
+          }
+          // #embed-captcha {
+          //   width: 300px;
+          //   margin: 0 auto;
+          // }
+          // .show {
+          //     display: block;
+          // }
+          // .hide {
+          //     display: none;
+          // }
+          // #notice {
+          //     color: red;
+          // }
           position: relative;
           .placeholder {
             position: absolute;
@@ -116,10 +133,23 @@
           <input type="password" name="password" v-model="login.password" @keyup.enter="submit" autocomplete="off"/>
           <span class="placeholder" :class="{fixed: login.password != '' && login.password != null}">密码</span>
         </div>
+        <!-- add -->
+        <div class="login-input">
+          <div class="captcha-wrapper">
+            <div id="embed-captcha"></div>
+          </div>
+          <!-- <p id="wait" class="show">正在加载验证码......</p> -->
+          <!-- <p id="notice" class="hide">请先完成验证</p> -->
+        </div>
+        <!-- end -->
         <div class="buttonDiv">
           <Button :loading="loading" block color="primary" size="l" @click="submit">登录</Button>
         </div>
       </div>
+      <!-- add -->
+      <br>
+      <input type="hidden" id="status" name="geetest_success">
+      <!-- end -->
       <p class="copyright"> Copyright © 2020 shjting - <a href="">shjting.top</a></p>
     </div>
   </div>
@@ -134,22 +164,73 @@ export default {
   data() {
     return {
       login: Login.parse({}),
-      loading: false
+      loading: false,
+      token: '',
+      validate: false
     };
   },
   mounted() {
+    this.initGeetest('#embed-captcha');
   },
   methods: {
+    initGeetest(captchaWrapper) {
+      R.Geetest.init({ id: 1 }).then(resp => {
+      // eslint-disable-next-line no-undef
+        initGeetest({
+          gt: resp.gt,
+          challenge: resp.challenge,
+          new_captcha: resp.new_captcha,
+          product: 'float',
+          width: '260px',
+          offline: !resp.success
+        }, (captchaObj) => {
+          this.captchaObj = captchaObj;
+          captchaObj.appendTo(captchaWrapper);
+          captchaObj.onReady(() => {
+            // DOM 准备好后，隐藏 #loading-tip 元素
+            // document.getElementById('loading-tip').style.display = 'none';
+          });
+          captchaObj.onSuccess(() => {
+            // 用户验证成功后，进行实际的提交行为
+            // todo
+            let result = captchaObj.getValidate();
+            R.Geetest.validate(result).then(resp => {
+              if (resp.code !== 0) {
+                HeyUI.$Message.error(resp.msg);
+                captchaObj.reset();
+                return;
+              }
+              this.validate = true;
+              this.token = resp.data.token;
+            }).catch(err => {
+              HeyUI.$Message.error('验证错误,请检查网络连接是否正常');
+              console.log('validate faild', err);
+            });
+          });
+          captchaObj.onError((error) => {
+            HeyUI.$Message.error('验证错误', error);
+            captchaObj.reset();
+          });
+        });
+      }).catch(err => {
+        console.log('geetest init failed', err);
+        HeyUI.$Message.error('初始化验证码失败，请检查网络连接是否正常');
+      });
+    },
     submit() {
+      if (!this.validate) {
+        HeyUI.$Message.error('请先完成验证');
+        return;
+      }
       this.loading = true;
       if (this.login.email == '' || this.login.email == null || this.login.password == '' || this.login.password == null) {
         return;
       }
-
-      R.Login.login(Login.dispose(this.login)).then(resp => {
+      console.log('token', this.token);
+      R.Login.login({ ...this.login, token: this.token }).then(resp => {
         if (resp.code === 0) {
           this.$Loading('加载中');
-          console.log('SYS_MENUS', resp.data.menus);
+          // console.log('SYS_MENUS', resp.data.menus);
           G.set('SYS_MENUS', resp.data.menus);
           G.trigger('SYS_MENU_UPDATE');
           if (!isAuthPage(this.$route.name)) {
@@ -165,7 +246,9 @@ export default {
         this.loading = false;
       // eslint-disable-next-line handle-callback-err
       }).catch(err => {
+        this.loading = false;
         HeyUI.$Message.error('网络连接错误！');
+        console.log(err);
       });
       // store.dispatch('login', this.login);
     }

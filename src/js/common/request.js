@@ -23,10 +23,19 @@ const Request = {
   },
   Login: {
     login(param) {
+      console.log('login', param);
       return Ajax.postJson('/v1/administrator/login', param);
     },
     logout(param) {
       return Ajax.post('/logout', param);
+    }
+  },
+  Geetest: {
+    init(params) {
+      return Ajax.get('/v1/geetest?t=' + (new Date()).getTime());
+    },
+    validate(params) {
+      return Ajax.postJson('/v1/geetest', params);
     }
   },
   Management: {
